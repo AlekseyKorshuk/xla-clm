@@ -81,6 +81,7 @@ INPUT_EXAMPLES = [
     "murders Susie.\nWilliam Afton: ...\nMe: \u2026\nWilliam Afton:"
 ]
 
+print(len(INPUT_EXAMPLES[-1]))
 
 def measure_time(function):
     """ Decorator to print execution time of a function """
