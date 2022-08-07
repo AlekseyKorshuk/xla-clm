@@ -64,7 +64,7 @@ class AlekseyModel:
         # remember: decoder-only models need left-padding
         model_name = "hakurei/litv2-6B-rev2"
         self.tokenizer = AutoTokenizer.from_pretrained(model_name, padding_side="left", pad_token="</s>")
-        self.model = TFAutoModelForCausalLM.from_pretrained(model_name)
+        self.model = TFAutoModelForCausalLM.from_pretrained(model_name, from_pt=True)
         self.tokenization_kwargs = {"pad_to_multiple_of": 1024, "padding": True, "return_tensors": "tf"}
         self.generation_kwargs = {
             "max_new_tokens": 64,
