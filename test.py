@@ -24,7 +24,11 @@ generation_kwargs = {
     'eos_token_id': 198,
     # 'bad_words_ids': self.bad_words_ids
 }
-generation_kwargs = {"max_new_tokens": 32}
+generation_kwargs = {
+    "max_new_tokens": 32,
+    'eos_token_id': 198,
+
+}
 
 
 # 3. Create your XLA generate function a̶n̶d̶ ̶m̶a̶k̶e̶ ̶P̶y̶T̶o̶r̶c̶h̶ ̶e̶a̶t̶ ̶d̶u̶s̶t̶
