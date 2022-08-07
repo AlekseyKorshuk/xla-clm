@@ -90,8 +90,7 @@ class AlekseyModel:
         print(generated_text)
         end = time.time()
         print(f"{end - start} sec")
-        decoded_text = self.tokenizer.decode(generated_text[0], skip_special_tokens=True)
-        print("decoded_text", decoded_text)
+        decoded_text = self.tokenizer.decode(generated_text[0][len(tokenized_inputs[0]):], skip_special_tokens=True)
 
         return decoded_text
 
