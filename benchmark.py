@@ -38,7 +38,7 @@ GENERATION_KWARGS = {
     # 'repetition_penalty': 1.13,
 }
 
-NUM_RUNS = 5
+NUM_RUNS = 100
 SAMPLE = GENERATION_KWARGS["do_sample"]
 MAX_NEW_TOKENS = GENERATION_KWARGS["max_new_tokens"]
 
