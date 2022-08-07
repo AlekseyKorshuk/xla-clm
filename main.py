@@ -19,6 +19,7 @@ MODEL_DEVICE = 0
 MODEL_PATH = '/mnt/models'
 MODEL_NAME = os.environ.get('MODEL_NAME', 'GPT-J-6B-lit-v2')
 MODEL_GLOBAL_PATH = os.path.join(MODEL_PATH, MODEL_NAME)
+MODEL_GLOBAL_PATH = "gpt2"
 # MODEL_FILENAME = os.environ.get('MODEL_FILENAME', 'gpt_lit_v2_rev1.pt')
 MODEL_PRECISION = os.environ.get('MODEL_PRECISION', 'native').lower()
 READY_FLAG = '/tmp/ready'
@@ -42,12 +43,12 @@ class KFServingHuggingFace(kfserving.KFModel):
 
     def load_config(self):
         logger.info(f'Loading config from {MODEL_GLOBAL_PATH}')
-        self.config = AutoConfig.from_pretrained(MODEL_GLOBAL_PATH, local_files_only=True)
+        self.config = AutoConfig.from_pretrained(MODEL_GLOBAL_PATH, local_files_only=False)
         logger.info('Config loaded.')
 
     def load_tokenizer(self):
         logger.info(f'Loading tokenizer from {MODEL_GLOBAL_PATH} ...')
-        self.tokenizer = AutoTokenizer.from_pretrained(MODEL_GLOBAL_PATH, local_files_only=True)
+        self.tokenizer = AutoTokenizer.from_pretrained(MODEL_GLOBAL_PATH, local_files_only=False)
         self.tokenizer.pad_token_id = 50256
         assert self.tokenizer.pad_token_id == 50256, 'incorrect padding token'
         self.tokenizer.padding_side = 'left'
@@ -161,7 +162,7 @@ class KFServingHuggingFace(kfserving.KFModel):
         with torch.inference_mode():
             outputs = self.generate(
                 input_ids['input_ids'],
-                attention_mask=input_ids['attention_mask'],
+                # attention_mask=input_ids['attention_mask'],
                 **request_params)
 
         responses = []
