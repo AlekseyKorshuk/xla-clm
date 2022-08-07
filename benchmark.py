@@ -218,6 +218,7 @@ def main_pt():
             return model.generate(**inputs, **GENERATION_KWARGS)
 
     inputs = get_inputs(tokenizer, index=0, return_tensors="pt", use_xla=False)
+    inputs.to(torch_device)
     _, _ = _generate(inputs)
 
     all_durations = []
