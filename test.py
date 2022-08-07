@@ -29,19 +29,19 @@ generation_kwargs = {
 # This is the only change with respect to original generate workflow!
 xla_generate = tf.function(model.generate, jit_compile=True)
 
-print("ORIGINAL GENERATE:")
-# 4. Generate! Remember -- the first call will be slow, but all subsequent calls will be fast if you've done things right.
-input_prompts = [f"The best thing about {country} is" for country in ["Spain", "Japan", "Angola"]]
-for input_prompt in input_prompts:
-    tokenized_inputs = tokenizer([input_prompt], **tokenization_kwargs)
-    start = time.time_ns()
-    generated_text = model.generate(**tokenized_inputs, **generation_kwargs)
-    end = time.time_ns()
-    decoded_text = tokenizer.decode(generated_text[0], skip_special_tokens=True)
-    print(f"Original prompt -- {input_prompt}")
-    print(f"Generated -- {decoded_text}")
-    print(f"Execution time -- {(end - start) / 1e6:.1f} ms\n")
-print("#" * 80)
+# print("ORIGINAL GENERATE:")
+# # 4. Generate! Remember -- the first call will be slow, but all subsequent calls will be fast if you've done things right.
+# input_prompts = [f"The best thing about {country} is" for country in ["Spain", "Japan", "Angola"]]
+# for input_prompt in input_prompts:
+#     tokenized_inputs = tokenizer([input_prompt], **tokenization_kwargs)
+#     start = time.time_ns()
+#     generated_text = model.generate(**tokenized_inputs, **generation_kwargs)
+#     end = time.time_ns()
+#     decoded_text = tokenizer.decode(generated_text[0], skip_special_tokens=True)
+#     print(f"Original prompt -- {input_prompt}")
+#     print(f"Generated -- {decoded_text}")
+#     print(f"Execution time -- {(end - start) / 1e6:.1f} ms\n")
+# print("#" * 80)
 
 print("XLA GENERATE:")
 input_prompts = [f"The best thing about {country} is" for country in ["Spain", "Japan", "Angola"]]
