@@ -62,7 +62,7 @@ class AlekseyModel:
     def __init__(self, bot_name):
         self.bot_name = bot_name
         # remember: decoder-only models need left-padding
-        model_name = "hakurei/litv2-6B-rev2"
+        model_name = "gpt2" #hakurei/litv2-6B-rev2
         self.tokenizer = AutoTokenizer.from_pretrained(model_name, padding_side="left", pad_token="</s>")
         self.model = TFAutoModelForCausalLM.from_pretrained(model_name, from_pt=True)
         self.tokenization_kwargs = {"pad_to_multiple_of": 1024, "padding": True, "return_tensors": "tf"}
@@ -73,7 +73,7 @@ class AlekseyModel:
             'temperature': 0.72,
             'top_k': 0,
             'top_p': 0.725,
-            # 'repetition_penalty': 1.13,
+            'repetition_penalty': 1.13,
         }
 
         # 3. Create your XLA generate function a̶n̶d̶ ̶m̶a̶k̶e̶ ̶P̶y̶T̶o̶r̶c̶h̶ ̶e̶a̶t̶ ̶d̶u̶s̶t̶
