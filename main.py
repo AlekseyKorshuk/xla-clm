@@ -147,7 +147,7 @@ class KFServingHuggingFace(kfserving.KFModel):
         request_params = {
             # 'temperature': 0.72,
             # # 'repetition_penalty': 1.13125,
-            # 'max_new_tokens': 64,
+            'max_new_tokens': 64,
             # 'top_p': 0.725,
             # 'top_k': 0,
             'do_sample': True,
