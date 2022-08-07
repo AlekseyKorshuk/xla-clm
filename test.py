@@ -44,7 +44,7 @@ print("ORIGINAL GENERATE:")
 # 4. Generate! Remember -- the first call will be slow, but all subsequent calls will be fast if you've done things right.
 input_prompts = [f"The best thing about {country} is" for country in ["Spain", "Japan", "Angola"]]
 for input_prompt in input_prompts:
-    tokenized_inputs = tokenizer([input_prompt], **tokenization_kwargs, return_tensors="pt")
+    tokenized_inputs = tokenizer([input_prompt], **tokenization_kwargs, return_tensors="pt").to(0)
     start = time.time_ns()
     generated_text = pt_model.generate(**tokenized_inputs, **generation_kwargs)
     end = time.time_ns()
