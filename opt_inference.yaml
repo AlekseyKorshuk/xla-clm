@@ -21,7 +21,7 @@ spec:
     minReplicas: 1
     maxReplicas: 1
     containerConcurrency: 4
-    timeout: 30
+    timeout: 100
     batcher:
       maxBatchSize: 4
       maxLatency: 100
