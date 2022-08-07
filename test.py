@@ -30,6 +30,7 @@ generation_kwargs = {
     'do_sample': True,
     'temperature': 0.72,
     'top_k': 0,
+    'top_p': 0.725,
 
 }
 
