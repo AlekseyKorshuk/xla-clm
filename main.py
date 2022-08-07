@@ -39,7 +39,7 @@ class KFServingHuggingFace(kfserving.KFModel):
         self.model = None
         self.generator = None
         self.bad_words_ids = None
-        self.generate = None
+        self.xla_generate = None
 
     def load_config(self):
         logger.info(f'Loading config from {MODEL_GLOBAL_PATH}')
@@ -99,7 +99,7 @@ class KFServingHuggingFace(kfserving.KFModel):
         self.model.config.eos_token_id = 198
         self.model.config.exponential_decay_length_penalty = None
         self.model.eos_token_id = 198
-        self.generate = tf.function(model.generate, jit_compile=True)
+        self.xla_generate = tf.function(model.generate, jit_compile=True)
 
         logger.info('Model loaded.')
         # self.model
@@ -156,14 +156,14 @@ class KFServingHuggingFace(kfserving.KFModel):
             inputs,
             add_special_tokens=False,
             return_tensors="tf",
-            return_attention_mask=True,
+            # return_attention_mask=True,
             padding=True)
 
-        with torch.inference_mode():
-            outputs = self.generate(
-                input_ids['input_ids'],
-                # attention_mask=input_ids['attention_mask'],
-                **request_params)
+        # with torch.inference_mode():
+        outputs = self.xla_generate(
+            **input_ids,
+            # attention_mask=input_ids['attention_mask'],
+            **request_params)
 
         responses = []
         for ins, outs in zip(inputs, outputs):
