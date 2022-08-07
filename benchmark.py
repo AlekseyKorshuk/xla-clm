@@ -30,6 +30,16 @@ RUN_FLAX = False
 if RUN_FLAX:
     import jax
 
+GENERATION_KWARGS = {
+    "max_new_tokens": 32,
+    'eos_token_id': 198,
+    'do_sample': True,
+    'temperature': 0.72,
+    'top_k': 0,
+    'top_p': 0.725,
+    # 'repetition_penalty': 1.13,
+}
+
 NUM_RUNS = 100
 SAMPLE = False
 NUM_BEAMS = 1
@@ -129,10 +139,10 @@ def main_tf_eager():
 
     @measure_time
     def _generate(inputs):
-        inputs.update({"do_sample": SAMPLE, "num_beams": NUM_BEAMS, "max_new_tokens": MAX_NEW_TOKENS})
-        if SAMPLE:
-            inputs.update({"temperature": TEMPERATURE, "top_k": TOP_K})
-        return model.generate(**inputs)
+        # inputs.update({"do_sample": SAMPLE, "num_beams": NUM_BEAMS, "max_new_tokens": MAX_NEW_TOKENS})
+        # if SAMPLE:
+        #     inputs.update({"temperature": TEMPERATURE, "top_k": TOP_K})
+        return model.generate(**inputs, **GENERATION_KWARGS)
 
     all_durations = []
     all_outputs = []
@@ -277,8 +287,9 @@ if __name__ == "__main__":
         flax_out = None
     print("\n\nPYTORCH")
     pt_out = main_pt()
-    print("\n\nTF (NO XLA)")
-    eager_out = main_tf_eager()
+    # print("\n\nTF (NO XLA)")
+    # eager_out = main_tf_eager()
+    eager_out = None
     print("\n\nTF (XLA)")
     xla_out = main_tf_xla()
     check_outputs(pt_out, eager_out, xla_out, flax_out)
