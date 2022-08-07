@@ -99,7 +99,7 @@ class KFServingHuggingFace(kfserving.KFModel):
         self.model.config.eos_token_id = 198
         self.model.config.exponential_decay_length_penalty = None
         self.model.eos_token_id = 198
-        self.xla_generate = tf.function(model.generate, jit_compile=True)
+        self.xla_generate = tf.function(self.model.generate, jit_compile=True)
 
         logger.info('Model loaded.')
         # self.model
