@@ -89,7 +89,7 @@ def get_model(framework, model_name):
 
     if type(config) in MODEL_FOR_CAUSAL_LM_MAPPING:
         if framework == "tf":
-            model = TFAutoModelForCausalLM.from_pretrained(model_name)
+            model = TFAutoModelForCausalLM.from_pretrained(model_name, from_pt=True)
         elif framework == "pt":
             model = AutoModelForCausalLM.from_pretrained(model_name)
         elif framework == "flax":
