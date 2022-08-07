@@ -78,7 +78,7 @@ class AlekseyModel:
 
         # 3. Create your XLA generate function a̶n̶d̶ ̶m̶a̶k̶e̶ ̶P̶y̶T̶o̶r̶c̶h̶ ̶e̶a̶t̶ ̶d̶u̶s̶t̶
         # This is the only change with respect to original generate workflow!
-        self.xla_generate = tf.function(model.generate, jit_compile=True)
+        self.xla_generate = tf.function(self.model.generate, jit_compile=True)
 
     # 4. Gene
 
