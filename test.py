@@ -57,7 +57,7 @@ xla_generate = tf.function(model.generate, jit_compile=True)
 print("XLA GENERATE:")
 input_prompts = [f"The best thing about {country} is" for country in ["Spain", "Japan", "Angola"]]
 for input_prompt in input_prompts:
-    tokenized_inputs = tokenizer([input_prompt], **tokenization_kwargs, return_tensors="tf")
+    tokenized_inputs = tokenizer([input_prompt], **tokenization_kwargs, return_tensors="tf").to(0)
     start = time.time_ns()
     generated_text = xla_generate(**tokenized_inputs, **generation_kwargs)
     end = time.time_ns()
