@@ -133,7 +133,7 @@ class KFServingHuggingFace(kfserving.KFModel):
         # batching requires fixed parameters
         request_params = {
             'temperature': 0.72,
-            'repetition_penalty': 1.13125,
+            # 'repetition_penalty': 1.13125,
             'max_new_tokens': 64,
             'top_p': 0.725,
             'top_k': 0,
@@ -150,7 +150,7 @@ class KFServingHuggingFace(kfserving.KFModel):
         input_ids = self.tokenizer(
             inputs,
             add_special_tokens=False,
-            return_tensors="pt",
+            return_tensors="tf",
             return_attention_mask=True,
             padding=True).to(0)
 

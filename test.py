@@ -7,7 +7,7 @@ import tensorflow as tf
 from transformers import AutoTokenizer, TFAutoModelForCausalLM, AutoModelForCausalLM
 
 # 1. Load model and tokenizer
-model_name = "hakurei/litv2-6B-rev2" # hakurei/litv2-6B-rev2
+model_name = "gpt2" # hakurei/litv2-6B-rev2
 # remember: decoder-only models need left-padding
 tokenizer = AutoTokenizer.from_pretrained(model_name, padding_side="left", pad_token="</s>")
 model = TFAutoModelForCausalLM.from_pretrained(model_name, from_pt=True)
