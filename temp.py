@@ -84,11 +84,11 @@ class AlekseyModel:
 
     def request(self, prompt):
         tokenized_inputs = self.tokenizer([prompt], **self.tokenization_kwargs)
-        start = time.time_ns()
+        start = time.time()
         generated_text = self.xla_generate(**tokenized_inputs, **self.generation_kwargs)
-        end = time.time_ns()
-        print(f"{end - start} ns")
-        decoded_text = self.tokenizer.decode(generated_text[0], skip_special_tokens=True)
+        end = time.time()
+        print(f"{end - start} sec")
+        decoded_text = self.tokenizer.decode(generated_text[0][len(tokenized_inputs[0]):], skip_special_tokens=True)
 
         return decoded_text
 
