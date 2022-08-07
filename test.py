@@ -29,6 +29,7 @@ generation_kwargs = {
     'eos_token_id': 198,
     'do_sample': True,
     'temperature': 0.72,
+    'top_k': 0,
 
 }
 
