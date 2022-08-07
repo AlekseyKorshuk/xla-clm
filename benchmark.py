@@ -25,7 +25,7 @@ from transformers import (
 )
 
 
-MODEL_NAME = "distilgpt2"
+MODEL_NAME = "hakurei/litv2-6B-rev2"
 RUN_FLAX = False
 if RUN_FLAX:
     import jax
@@ -158,6 +158,9 @@ def main_tf_xla():
         if SAMPLE:
             inputs.update({"temperature": TEMPERATURE, "top_k": TOP_K})
         return xla_generate(**inputs)
+
+    inputs = get_inputs(tokenizer, index=0, return_tensors="tf", use_xla=True)
+    _, _ = _generate(inputs)
 
     all_durations = []
     all_outputs = []
