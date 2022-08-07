@@ -28,6 +28,7 @@ generation_kwargs = {
     "max_new_tokens": 32,
     'eos_token_id': 198,
     'do_sample': True,
+    'temperature': 0.72,
 
 }
 
