@@ -25,7 +25,7 @@ from transformers import (
 )
 
 
-MODEL_NAME = "gpt2" #hakurei/litv2-6B-rev2
+MODEL_NAME = "hakurei/litv2-6B-rev2" #hakurei/litv2-6B-rev2
 RUN_FLAX = False
 if RUN_FLAX:
     import jax
@@ -41,7 +41,7 @@ GENERATION_KWARGS = {
 }
 
 NUM_RUNS = 10
-SAMPLE = False
+SAMPLE = GENERATION_KWARGS["do_sample"]
 NUM_BEAMS = 1
 MAX_NEW_TOKENS = 64
 
