@@ -48,8 +48,8 @@ class KFServingHuggingFace(kfserving.KFModel):
     def load_tokenizer(self):
         logger.info(f'Loading tokenizer from {MODEL_GLOBAL_PATH} ...')
         self.tokenizer = AutoTokenizer.from_pretrained(MODEL_GLOBAL_PATH, local_files_only=True)
-        # self.tokenizer.pad_token_id = ['<|endoftext|>']
-        # assert self.tokenizer.pad_token_id == 50256, 'incorrect padding token'
+        self.tokenizer.pad_token_id = 50256
+        assert self.tokenizer.pad_token_id == 50256, 'incorrect padding token'
         self.tokenizer.padding_side = 'left'
         self.tokenizer.truncation_side = 'left'
         logger.info('Tokenizer loaded.')
