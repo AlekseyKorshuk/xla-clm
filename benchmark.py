@@ -38,7 +38,7 @@ GENERATION_KWARGS = {
     # 'repetition_penalty': 1.13,
 }
 
-NUM_RUNS = 100
+NUM_RUNS = 10
 SAMPLE = GENERATION_KWARGS["do_sample"]
 MAX_NEW_TOKENS = GENERATION_KWARGS["max_new_tokens"]
 
@@ -50,10 +50,10 @@ CHECK_RESULTS = not SAMPLE and MAX_NEW_TOKENS <= 64
 
 # different lengths to ensure XLA is able to handle different number of input tokens
 INPUT_EXAMPLES = [
-    "The dog",
-    "Yesterday, there was",
-    "Roses are red, Violets are blue",
-    "'The quick brown fox jumps over the lazy dog' - he said.",
+    # "The dog",
+    # "Yesterday, there was",
+    # "Roses are red, Violets are blue",
+    # "'The quick brown fox jumps over the lazy dog' - he said.",
     "ear's Fright and tried to kill the night guard, who is Michael, Henry or a random unnamed person. "
     "Eventually, the attraction is caught on fire. In the newspaper, Springtrap's head can be seen when brightening up"
     " the image, giving an early hint he survived.\n\nIn the opening scene of Sister Location, an entrepreneur is "
