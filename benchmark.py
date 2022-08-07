@@ -81,7 +81,6 @@ INPUT_EXAMPLES = [
     "murders Susie.\nWilliam Afton: ...\nMe: \u2026\nWilliam Afton:"
 ]
 
-print(len(INPUT_EXAMPLES[-1]))
 
 def measure_time(function):
     """ Decorator to print execution time of a function """
@@ -217,6 +216,9 @@ def main_pt():
             # if SAMPLE:
             #     inputs.update({"temperature": TEMPERATURE, "top_k": TOP_K})
             return model.generate(**inputs, **GENERATION_KWARGS)
+
+    inputs = get_inputs(tokenizer, index=0, return_tensors="pt", use_xla=False)
+    _, _ = _generate(inputs)
 
     all_durations = []
     all_outputs = []
