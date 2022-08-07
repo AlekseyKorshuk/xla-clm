@@ -11,7 +11,7 @@ model_name = "hakurei/litv2-6B-rev2" # hakurei/litv2-6B-rev2
 # remember: decoder-only models need left-padding
 tokenizer = AutoTokenizer.from_pretrained(model_name, padding_side="left", pad_token="</s>")
 model = TFAutoModelForCausalLM.from_pretrained(model_name, from_pt=True)
-pt_model = AutoModelForCausalLM.from_pretrained(model_name)
+pt_model = AutoModelForCausalLM.from_pretrained(model_name).to(0)
 
 # 2. Prepare tokenization and generation arguments -- don't forget padding to avoid retracing!
 tokenization_kwargs = {"padding": True}
@@ -40,7 +40,7 @@ generation_kwargs = {
 # This is the only change with respect to original generate workflow!
 xla_generate = tf.function(model.generate, jit_compile=True)
 
-# print("ORIGINAL GENERATE:")
+print("ORIGINAL GENERATE:")
 # 4. Generate! Remember -- the first call will be slow, but all subsequent calls will be fast if you've done things right.
 input_prompts = [f"The best thing about {country} is" for country in ["Spain", "Japan", "Angola"]]
 for input_prompt in input_prompts:
