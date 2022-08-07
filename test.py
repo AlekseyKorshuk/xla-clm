@@ -31,7 +31,7 @@ generation_kwargs = {
     'temperature': 0.72,
     'top_k': 0,
     'top_p': 0.725,
-
+    'repetition_penalty': 1.13125,
 }
 
 
