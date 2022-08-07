@@ -23,7 +23,6 @@ MODEL_PRECISION = os.environ.get('MODEL_PRECISION', 'native').lower()
 READY_FLAG = '/tmp/ready'
 DEBUG_MODE = bool(os.environ.get('DEBUG_MODE', 0))
 
-
 logging.basicConfig(level=kfserving.constants.KFSERVING_LOGLEVEL)
 logger = logging.getLogger(MODEL_NAME)
 
@@ -90,14 +89,18 @@ class KFServingHuggingFace(kfserving.KFModel):
         self.load_tokenizer()
         self.load_bad_word_ids()
 
-        logger.info(f'Loading model from {MODEL_PATH} into device {MODEL_DEVICE}:{torch.cuda.get_device_name(MODEL_DEVICE)}')
+        logger.info(
+            f'Loading model from {MODEL_PATH} into device {MODEL_DEVICE}:{torch.cuda.get_device_name(MODEL_DEVICE)}')
 
-        self.model = torch.load(os.path.join(MODEL_PATH, MODEL_FILENAME))
+        self.model = TFAutoModelForCausalLM.from_pretrained(os.path.join(MODEL_PATH, MODEL_FILENAME), from_pt=True)
+        # self.model = torch.load(os.path.join(MODEL_PATH, MODEL_FILENAME))
         self.model.config.eos_token_id = 198
         self.model.config.exponential_decay_length_penalty = None
         self.model.eos_token_id = 198
+        self.generate = tf.function(model.generate, jit_compile=True)
+
         logger.info('Model loaded.')
-        self.model.to(0)
+        # self.model
 
         logger.info('Creating generator for model ...')
         logger.info(f'Model is ready in {str(time.time() - start_time)} seconds.')
@@ -152,10 +155,10 @@ class KFServingHuggingFace(kfserving.KFModel):
             add_special_tokens=False,
             return_tensors="tf",
             return_attention_mask=True,
-            padding=True).to(0)
+            padding=True)
 
         with torch.inference_mode():
-            outputs = self.model.generate(
+            outputs = self.generate(
                 input_ids['input_ids'],
                 attention_mask=input_ids['attention_mask'],
                 **request_params)
@@ -194,6 +197,7 @@ if __name__ == '__main__':
 
     if DEBUG_MODE:
         import time
+
         time.sleep(3600 * 10)
 
     model = KFServingHuggingFace(MODEL_NAME)
