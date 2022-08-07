@@ -25,7 +25,7 @@ from transformers import (
 )
 
 
-MODEL_NAME = "hakurei/litv2-6B-rev2"
+MODEL_NAME = "gpt2" #hakurei/litv2-6B-rev2
 RUN_FLAX = False
 if RUN_FLAX:
     import jax
