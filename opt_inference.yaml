@@ -3,7 +3,7 @@ kind: InferenceService
 metadata:
   labels:
     qos.coreweave.cloud/latency: low
-  name: inference
+  name: tf-inference
   namespace: tenant-chairesearch-test
   annotations:
     autoscaling.knative.dev/class: kpa.autoscaling.knative.dev
@@ -26,22 +26,26 @@ spec:
       maxBatchSize: 4
       maxLatency: 100
       timeout: 30
+    imagePullSecrets:
+      - name: docker-creds
     containers:
     - name: inference-container
-      image: alekseykorshuk/opt-inference:v1
-      imagePullPolicy: IfNotPresent
+      image: gcr.io/chai-959f8/training:tf-inference-image
+      imagePullPolicy: Always
       resources:
         limits:
           cpu: "1"
           nvidia.com/gpu: "1"
-          memory: 32Gi
+          memory: 128Gi
         requests:
           cpu: "1"
           nvidia.com/gpu: "1"
-          memory: 32Gi
+          memory: 128Gi
       env:
         - name: STORAGE_URI
           value: pvc://model-storage/
+        - name: MODEL_NAME
+          value: "litv2-6B-rev2"
       readinessProbe:
         exec:
           command:

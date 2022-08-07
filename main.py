@@ -18,7 +18,8 @@ SERVER_PORT = int(os.environ.get('SERVER_PORT', 8080))
 MODEL_DEVICE = 0
 MODEL_PATH = '/mnt/models'
 MODEL_NAME = os.environ.get('MODEL_NAME', 'GPT-J-6B-lit-v2')
-MODEL_FILENAME = os.environ.get('MODEL_FILENAME', 'gpt_lit_v2_rev1.pt')
+MODEL_GLOBAL_PATH = os.path.join(MODEL_PATH, MODEL_NAME)
+# MODEL_FILENAME = os.environ.get('MODEL_FILENAME', 'gpt_lit_v2_rev1.pt')
 MODEL_PRECISION = os.environ.get('MODEL_PRECISION', 'native').lower()
 READY_FLAG = '/tmp/ready'
 DEBUG_MODE = bool(os.environ.get('DEBUG_MODE', 0))
@@ -40,15 +41,15 @@ class KFServingHuggingFace(kfserving.KFModel):
         self.generate = None
 
     def load_config(self):
-        logger.info(f'Loading config from {MODEL_PATH}')
-        self.config = AutoConfig.from_pretrained(MODEL_PATH, local_files_only=True)
+        logger.info(f'Loading config from {MODEL_GLOBAL_PATH}')
+        self.config = AutoConfig.from_pretrained(MODEL_GLOBAL_PATH, local_files_only=True)
         logger.info('Config loaded.')
 
     def load_tokenizer(self):
-        logger.info(f'Loading tokenizer from {MODEL_PATH} ...')
-        self.tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH, local_files_only=True)
-        self.tokenizer.pad_token_id = ['<|endoftext|>']
-        assert self.tokenizer.pad_token_id == 50256, 'incorrect padding token'
+        logger.info(f'Loading tokenizer from {MODEL_GLOBAL_PATH} ...')
+        self.tokenizer = AutoTokenizer.from_pretrained(MODEL_GLOBAL_PATH, local_files_only=True)
+        # self.tokenizer.pad_token_id = ['<|endoftext|>']
+        # assert self.tokenizer.pad_token_id == 50256, 'incorrect padding token'
         self.tokenizer.padding_side = 'left'
         self.tokenizer.truncation_side = 'left'
         logger.info('Tokenizer loaded.')
@@ -57,7 +58,7 @@ class KFServingHuggingFace(kfserving.KFModel):
         logger.info('loading bad word ids')
 
         tokenizer = AutoTokenizer.from_pretrained(
-            MODEL_PATH,
+            MODEL_GLOBAL_PATH,
             local_files_only=True,
             add_prefix_space=True
         )
@@ -90,9 +91,9 @@ class KFServingHuggingFace(kfserving.KFModel):
         self.load_bad_word_ids()
 
         logger.info(
-            f'Loading model from {MODEL_PATH} into device {MODEL_DEVICE}:{torch.cuda.get_device_name(MODEL_DEVICE)}')
+            f'Loading model from {MODEL_GLOBAL_PATH} into device {MODEL_DEVICE}:{torch.cuda.get_device_name(MODEL_DEVICE)}')
 
-        self.model = TFAutoModelForCausalLM.from_pretrained(os.path.join(MODEL_PATH, MODEL_FILENAME), from_pt=True)
+        self.model = TFAutoModelForCausalLM.from_pretrained(MODEL_GLOBAL_PATH, from_pt=True)
         # self.model = torch.load(os.path.join(MODEL_PATH, MODEL_FILENAME))
         self.model.config.eos_token_id = 198
         self.model.config.exponential_decay_length_penalty = None
