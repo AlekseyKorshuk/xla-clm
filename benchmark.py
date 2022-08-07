@@ -40,7 +40,7 @@ GENERATION_KWARGS = {
     # 'repetition_penalty': 1.13,
 }
 
-NUM_RUNS = 100
+NUM_RUNS = 3
 SAMPLE = False
 NUM_BEAMS = 1
 MAX_NEW_TOKENS = 64
@@ -244,9 +244,9 @@ def check_outputs(pt_out, eager_out, xla_out, flax_out):
         pt_decoded = [
             tokenizer.decode(out[0, :], skip_special_tokens=True) for i, out in enumerate(pt_out) if i <= num_sentences
         ]
-        eager_decoded = [
-            tokenizer.decode(out[0, :], skip_special_tokens=True) for i, out in enumerate(eager_out) if i <= num_sentences
-        ]
+        # eager_decoded = [
+        #     tokenizer.decode(out[0, :], skip_special_tokens=True) for i, out in enumerate(eager_out) if i <= num_sentences
+        # ]
         xla_decoded = [
             tokenizer.decode(out[0, :], skip_special_tokens=True) for i, out in enumerate(xla_out) if i <= num_sentences
         ]
@@ -257,9 +257,9 @@ def check_outputs(pt_out, eager_out, xla_out, flax_out):
         failed_checks = False
         for i in range(num_sentences):
             failed_this_check = False
-            if pt_decoded[i] != eager_decoded[i]:
-                print(f"FAILED: pt_decoded[{i}] != eager_decoded[{i}]")
-                failed_this_check = True
+            # if pt_decoded[i] != eager_decoded[i]:
+            #     print(f"FAILED: pt_decoded[{i}] != eager_decoded[{i}]")
+            #     failed_this_check = True
             if pt_decoded[i] != xla_decoded[i]:
                 print(f"FAILED: pt_decoded[{i}] != xla_decoded[{i}]")
                 failed_this_check = True
@@ -269,7 +269,7 @@ def check_outputs(pt_out, eager_out, xla_out, flax_out):
                     failed_this_check = True
             if failed_this_check:
                 print(f"PT    : {pt_decoded[i]}")
-                print(f"EAGER : {eager_decoded[i]}")
+                # print(f"EAGER : {eager_decoded[i]}")
                 print(f"XLA   : {xla_decoded[i]}")
                 if flax_out:
                     print(f"FLAX  : {flax_decoded[i]}")
