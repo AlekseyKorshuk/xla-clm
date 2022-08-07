@@ -43,7 +43,7 @@ SAMPLE = GENERATION_KWARGS["do_sample"]
 MAX_NEW_TOKENS = GENERATION_KWARGS["max_new_tokens"]
 
 BATCH_SIZE = 1
-PAD_MULTIPLE = 2048  # XLA has to retrace for each input length, pads the inputs so as to be multiples of this
+PAD_MULTIPLE = 1024  # XLA has to retrace for each input length, pads the inputs so as to be multiples of this
 
 # Don't check results for generations that are prone to small differences: long generations and many beams.
 CHECK_RESULTS = not SAMPLE and MAX_NEW_TOKENS <= 64
