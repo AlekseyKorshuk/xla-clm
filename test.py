@@ -21,7 +21,7 @@ generation_kwargs = {
     'top_p': 0.725,
     'top_k': 0,
     'do_sample': True,
-    'eos_token_id': 198,
+    # 'eos_token_id': 198,
     # 'bad_words_ids': self.bad_words_ids
 }
 # generation_kwargs = {"num_beams": 4, "max_new_tokens": 32}
