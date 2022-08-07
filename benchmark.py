@@ -27,14 +27,11 @@ from transformers import (
 )
 
 MODEL_NAME = "hakurei/litv2-6B-rev2"  # hakurei/litv2-6B-rev2
-RUN_FLAX = False
-if RUN_FLAX:
-    import jax
 
 GENERATION_KWARGS = {
     "max_new_tokens": 32,
     'eos_token_id': 198,
-    'do_sample': False,
+    'do_sample': True,
     'temperature': 0.72,
     'top_k': 0,
     'top_p': 0.725,
@@ -43,16 +40,13 @@ GENERATION_KWARGS = {
 
 NUM_RUNS = 10
 SAMPLE = GENERATION_KWARGS["do_sample"]
-NUM_BEAMS = 1
-MAX_NEW_TOKENS = 64
+MAX_NEW_TOKENS = GENERATION_KWARGS["max_new_tokens"]
 
 BATCH_SIZE = 1
-PAD_MULTIPLE = 1024  # XLA has to retrace for each input length, pads the inputs so as to be multiples of this
-TEMPERATURE = 2.0  # used when SAMPLE is True
-TOP_K = 50  # used when SAMPLE is True
+PAD_MULTIPLE = 64  # XLA has to retrace for each input length, pads the inputs so as to be multiples of this
 
 # Don't check results for generations that are prone to small differences: long generations and many beams.
-CHECK_RESULTS = not SAMPLE and (NUM_BEAMS <= 16 and MAX_NEW_TOKENS <= 64)
+CHECK_RESULTS = not SAMPLE and MAX_NEW_TOKENS <= 64
 
 # different lengths to ensure XLA is able to handle different number of input tokens
 INPUT_EXAMPLES = [
@@ -159,9 +153,6 @@ def main_tf_eager():
 
     @measure_time
     def _generate(inputs):
-        # inputs.update({"do_sample": SAMPLE, "num_beams": NUM_BEAMS, "max_new_tokens": MAX_NEW_TOKENS})
-        # if SAMPLE:
-        #     inputs.update({"temperature": TEMPERATURE, "top_k": TOP_K})
         return model.generate(**inputs, **GENERATION_KWARGS)
 
     all_durations = []
@@ -184,9 +175,6 @@ def main_tf_xla():
 
     @measure_time
     def _generate(inputs):
-        # inputs.update({"do_sample": SAMPLE, "num_beams": NUM_BEAMS, "max_new_tokens": MAX_NEW_TOKENS})
-        # if SAMPLE:
-        #     inputs.update({"temperature": TEMPERATURE, "top_k": TOP_K})
         return xla_generate(**inputs, **GENERATION_KWARGS)
 
     inputs = get_inputs(tokenizer, index=0, return_tensors="tf", use_xla=True)
@@ -212,9 +200,6 @@ def main_pt():
     @measure_time
     def _generate(inputs):
         with torch.no_grad():
-            # inputs.update({"do_sample": SAMPLE, "num_beams": NUM_BEAMS, "max_new_tokens": MAX_NEW_TOKENS})
-            # if SAMPLE:
-            #     inputs.update({"temperature": TEMPERATURE, "top_k": TOP_K})
             return model.generate(**inputs, **GENERATION_KWARGS)
 
     inputs = get_inputs(tokenizer, index=0, return_tensors="pt", use_xla=False)
@@ -235,32 +220,7 @@ def main_pt():
     return all_outputs
 
 
-def main_flax():
-    model = get_model("flax", MODEL_NAME)
-    tokenizer = get_tokenizer(MODEL_NAME)
-    model.config.pad_token_id = model.config.eos_token_id
-
-    generate_kwargs = {"do_sample": SAMPLE, "num_beams": NUM_BEAMS, "max_new_tokens": MAX_NEW_TOKENS}
-    if SAMPLE:
-        generate_kwargs.update({"temperature": TEMPERATURE, "top_k": TOP_K})
-    jit_generate = jax.jit(partial(model.generate, **generate_kwargs))
-
-    @measure_time
-    def _generate(inputs):
-        return jit_generate(**inputs)
-
-    all_durations = []
-    all_outputs = []
-    for i in tqdm(range(NUM_RUNS)):
-        inputs = get_inputs(tokenizer, index=i, return_tensors="np", use_xla=True)
-        gen_out, duration = _generate(inputs)
-        all_durations.append(duration.microseconds + duration.seconds * 1e6)
-        all_outputs.append(gen_out)
-    print_status(all_outputs, all_durations)
-    return all_outputs
-
-
-def check_outputs(pt_out, eager_out, xla_out, flax_out):
+def check_outputs(pt_out, eager_out, xla_out):
     if CHECK_RESULTS:
         print("\n\nCHECKING OUTPUTS")
         tokenizer = get_tokenizer(MODEL_NAME)
@@ -274,11 +234,6 @@ def check_outputs(pt_out, eager_out, xla_out, flax_out):
         xla_decoded = [
             tokenizer.decode(out[0, :], skip_special_tokens=True) for i, out in enumerate(xla_out) if i <= num_sentences
         ]
-        if flax_out:
-            flax_decoded = [
-                tokenizer.decode(out.sequences[0, :], skip_special_tokens=True) for i, out in enumerate(flax_out) if
-                i <= num_sentences
-            ]
         failed_checks = False
         for i in range(num_sentences):
             failed_this_check = False
@@ -288,16 +243,10 @@ def check_outputs(pt_out, eager_out, xla_out, flax_out):
             if pt_decoded[i] != xla_decoded[i]:
                 print(f"FAILED: pt_decoded[{i}] != xla_decoded[{i}]")
                 failed_this_check = True
-            if flax_out:
-                if pt_decoded[i] != flax_decoded[i]:
-                    print(f"FAILED: pt_decoded[{i}] != flax_decoded[{i}]")
-                    failed_this_check = True
             if failed_this_check:
                 print(f"PT    : {pt_decoded[i]}")
                 # print(f"EAGER : {eager_decoded[i]}")
                 print(f"XLA   : {xla_decoded[i]}")
-                if flax_out:
-                    print(f"FLAX  : {flax_decoded[i]}")
                 print("")
             failed_checks |= failed_this_check
         if not failed_checks:
@@ -305,11 +254,6 @@ def check_outputs(pt_out, eager_out, xla_out, flax_out):
 
 
 if __name__ == "__main__":
-    if RUN_FLAX:
-        print("\n\nFLAX")
-        flax_out = main_flax()
-    else:
-        flax_out = None
     print("\n\nPYTORCH")
     pt_out = main_pt()
     # print("\n\nTF (NO XLA)")
@@ -317,4 +261,4 @@ if __name__ == "__main__":
     eager_out = None
     print("\n\nTF (XLA)")
     xla_out = main_tf_xla()
-    check_outputs(pt_out, eager_out, xla_out, flax_out)
+    check_outputs(pt_out, eager_out, xla_out)
