@@ -56,10 +56,10 @@ CHECK_RESULTS = not SAMPLE and (NUM_BEAMS <= 16 and MAX_NEW_TOKENS <= 64)
 
 # different lengths to ensure XLA is able to handle different number of input tokens
 INPUT_EXAMPLES = [
-    # "The dog",
-    # "Yesterday, there was",
-    # "Roses are red, Violets are blue",
-    # "'The quick brown fox jumps over the lazy dog' - he said.",
+    "The dog",
+    "Yesterday, there was",
+    "Roses are red, Violets are blue",
+    "'The quick brown fox jumps over the lazy dog' - he said.",
     "ear's Fright and tried to kill the night guard, who is Michael, Henry or a random unnamed person. "
     "Eventually, the attraction is caught on fire. In the newspaper, Springtrap's head can be seen when brightening up"
     " the image, giving an early hint he survived.\n\nIn the opening scene of Sister Location, an entrepreneur is "
@@ -79,7 +79,7 @@ INPUT_EXAMPLES = [
     "game.\n\nSeen when completing the Fruity Maze game, standing next to a girl named Susie from the right is William "
     "Afton wearing the Spring Bonnie suit that he eventually was trapped in and became Springtrap he then seemingly "
     "murders Susie.\nWilliam Afton: ...\nMe: \u2026\nWilliam Afton:"
-] * 5
+]
 
 print(len(INPUT_EXAMPLES[-1]))
 
