@@ -10,10 +10,12 @@ os.environ["XLA_PYTHON_CLIENT_PREALLOCATE"] = "false"
 # PyTorch imports and settings
 import torch
 from transformers.testing_utils import torch_device
+
 torch.backends.cuda.matmul.allow_tf32 = True  # All frameworks using TF32
 
 # TF imports and settings
 import tensorflow as tf
+
 physical_devices = tf.config.list_physical_devices('GPU')
 tf.config.experimental.set_memory_growth(physical_devices[0], True)
 
@@ -24,8 +26,7 @@ from transformers import (
     MODEL_FOR_SEQ_TO_SEQ_CAUSAL_LM_MAPPING, AutoModelForSeq2SeqLM, TFAutoModelForSeq2SeqLM, FlaxAutoModelForSeq2SeqLM,
 )
 
-
-MODEL_NAME = "hakurei/litv2-6B-rev2" #hakurei/litv2-6B-rev2
+MODEL_NAME = "hakurei/litv2-6B-rev2"  # hakurei/litv2-6B-rev2
 RUN_FLAX = False
 if RUN_FLAX:
     import jax
@@ -59,13 +60,31 @@ INPUT_EXAMPLES = [
     "Yesterday, there was",
     "Roses are red, Violets are blue",
     "'The quick brown fox jumps over the lazy dog' - he said.",
-    "All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and "\
-    "should act towards one another in a spirit of brotherhood."
+    "ear's Fright and tried to kill the night guard, who is Michael, Henry or a random unnamed person. "
+    "Eventually, the attraction is caught on fire. In the newspaper, Springtrap's head can be seen when brightening up"
+    " the image, giving an early hint he survived.\n\nIn the opening scene of Sister Location, an entrepreneur is "
+    "asking him questions about the new animatronics. They inquire why certain features were added and express their "
+    "concerns, but he avoids answering the specific features they refer to.\n\nHe is also the creator of the Funtime "
+    "Animatronics (Assisted by an unknowing Henry) and the former owner of the Circus Baby's Entertainment and Rental, "
+    "and, by extension, Circus Baby's Pizza World.\n\nIt's revealed in the final Michael Afton's Cutscene that William "
+    "sent his son, Michael, to his rundown factory to find his daughter, but he is 'scooped' as his sister, Baby, "
+    "tricked him. Ennard took control over his body, but he manages to survive as Michael becomes a rotting corpse. "
+    "He swears to find him.\n\nWilliam Afton returns as the main antagonist. It's revealed that William's old partner, "
+    "Henry, lured Springtrap, Scrap Baby (Elizabeth), Molten Freddy (and by extension, the remaining parts of Ennard), "
+    "and Lefty (the Puppet) to a new Freddy Fazbear's Pizza. Michael in Freddy Fazbear's Pizzeria Simulator is the "
+    "manager. On Saturday, Henry burns the whole pizzeria down, while he dies in the fire. Michael decides to stay in "
+    "the fire as well. Springtrap and every other animatronic die in the fire and the souls are free, as their killer "
+    "is dead.\n\nWhile not directly appearing, footprints that are very similar to Springtrap's can be found behind "
+    "the house in Midnight Motorist's secret minigame, presumably luring away the child of the abusive father in the "
+    "game.\n\nSeen when completing the Fruity Maze game, standing next to a girl named Susie from the right is William "
+    "Afton wearing the Spring Bonnie suit that he eventually was trapped in and became Springtrap he then seemingly "
+    "murders Susie.\nWilliam Afton: ...\nMe: \u2026\nWilliam Afton:"
 ]
 
 
 def measure_time(function):
     """ Decorator to print execution time of a function """
+
     @wraps(function)
     def decorated(inputs):
         start = time.time()
@@ -73,6 +92,7 @@ def measure_time(function):
         end = time.time()
         duration = timedelta(seconds=end - start)
         return fn_output, duration
+
     return decorated
 
 
@@ -121,9 +141,9 @@ def get_model(framework, model_name):
 
 
 def print_status(all_outputs, all_durations):
-    print(f"Execution time -- 1st call: {all_durations[0]/1000:.2f} ms")
+    print(f"Execution time -- 1st call: {all_durations[0] / 1000:.2f} ms")
     all_durations = all_durations[1:]
-    print(f"Execution time -- mean: {(sum(all_durations)/len(all_durations))/1000:.2f} ms")
+    print(f"Execution time -- mean: {(sum(all_durations) / len(all_durations)) / 1000:.2f} ms")
     all_outputs = all_outputs[1:]
     try:
         mean_length = sum([out.shape[1] for out in all_outputs]) / len(all_outputs)
@@ -252,7 +272,8 @@ def check_outputs(pt_out, eager_out, xla_out, flax_out):
         ]
         if flax_out:
             flax_decoded = [
-                tokenizer.decode(out.sequences[0, :], skip_special_tokens=True) for i, out in enumerate(flax_out) if i <= num_sentences
+                tokenizer.decode(out.sequences[0, :], skip_special_tokens=True) for i, out in enumerate(flax_out) if
+                i <= num_sentences
             ]
         print(pt_out)
         print(pt_decoded)
