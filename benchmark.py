@@ -276,10 +276,6 @@ def check_outputs(pt_out, eager_out, xla_out, flax_out):
                 tokenizer.decode(out.sequences[0, :], skip_special_tokens=True) for i, out in enumerate(flax_out) if
                 i <= num_sentences
             ]
-        print(pt_out)
-        print(pt_decoded)
-        print(xla_out)
-        print(xla_decoded)
         failed_checks = False
         for i in range(num_sentences):
             failed_this_check = False
