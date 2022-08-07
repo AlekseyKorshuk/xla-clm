@@ -6,7 +6,6 @@ from tqdm import tqdm
 
 # JAX imports and settings
 os.environ["XLA_PYTHON_CLIENT_PREALLOCATE"] = "false"
-import jax
 
 # PyTorch imports and settings
 import torch
@@ -27,7 +26,10 @@ from transformers import (
 
 
 MODEL_NAME = "distilgpt2"
-RUN_FLAX = True
+RUN_FLAX = False
+if RUN_FLAX:
+    import jax
+
 NUM_RUNS = 100
 SAMPLE = False
 NUM_BEAMS = 1
