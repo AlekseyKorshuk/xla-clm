@@ -62,7 +62,7 @@ class AlekseyModel:
     def __init__(self, bot_name):
         self.bot_name = bot_name
         # remember: decoder-only models need left-padding
-        model_name = "gpt2"
+        model_name = "hakurei/litv2-6B-rev2"
         self.tokenizer = AutoTokenizer.from_pretrained(model_name, padding_side="left", pad_token="</s>")
         self.model = TFAutoModelForCausalLM.from_pretrained(model_name)
         self.tokenization_kwargs = {"pad_to_multiple_of": 1024, "padding": True, "return_tensors": "tf"}
