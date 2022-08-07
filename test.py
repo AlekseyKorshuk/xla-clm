@@ -13,7 +13,7 @@ tokenizer = AutoTokenizer.from_pretrained(model_name, padding_side="left", pad_t
 model = TFAutoModelForCausalLM.from_pretrained(model_name, from_pt=True)
 
 # 2. Prepare tokenization and generation arguments -- don't forget padding to avoid retracing!
-tokenization_kwargs = {"pad_to_multiple_of": 32, "padding": True, "return_tensors": "tf"}
+tokenization_kwargs = {"pad_to_multiple_of": 64, "padding": True, "return_tensors": "tf"}
 generation_kwargs = {
     'temperature': 0.72,
     'repetition_penalty': 1.13125,
