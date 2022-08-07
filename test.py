@@ -7,7 +7,7 @@ import tensorflow as tf
 from transformers import AutoTokenizer, TFAutoModelForCausalLM
 
 # 1. Load model and tokenizer
-model_name = "hakurei/litv2-6B-rev2" # hakurei/litv2-6B-rev2
+model_name = "gpt2" # hakurei/litv2-6B-rev2
 # remember: decoder-only models need left-padding
 tokenizer = AutoTokenizer.from_pretrained(model_name, padding_side="left", pad_token="</s>")
 model = TFAutoModelForCausalLM.from_pretrained(model_name, from_pt=True)
@@ -21,7 +21,7 @@ generation_kwargs = {
     'top_p': 0.725,
     'top_k': 0,
     'do_sample': True,
-    # 'eos_token_id': 198,
+    'eos_token_id': 198,
     # 'bad_words_ids': self.bad_words_ids
 }
 # generation_kwargs = {"num_beams": 4, "max_new_tokens": 32}
