@@ -20,7 +20,7 @@ generation_kwargs = {
     'max_new_tokens': 64,
     'top_p': 0.725,
     'top_k': 0,
-    'do_sample': True,
+    # 'do_sample': True,
     'eos_token_id': 198,
     # 'bad_words_ids': self.bad_words_ids
 }
