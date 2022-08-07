@@ -40,7 +40,7 @@ GENERATION_KWARGS = {
     # 'repetition_penalty': 1.13,
 }
 
-NUM_RUNS = 3
+NUM_RUNS = 10
 SAMPLE = False
 NUM_BEAMS = 1
 MAX_NEW_TOKENS = 64
