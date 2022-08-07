@@ -69,7 +69,7 @@ class AlekseyModel:
         self.generation_kwargs = {
             "max_new_tokens": 64,
             'eos_token_id': 198,
-            'do_sample': False,
+            'do_sample': True,
             'temperature': 0.72,
             'top_k': 0,
             'top_p': 0.725,
@@ -84,10 +84,8 @@ class AlekseyModel:
 
     def request(self, prompt):
         tokenized_inputs = self.tokenizer([prompt], **self.tokenization_kwargs)
-        print(tokenized_inputs)
         start = time.time()
         generated_text = self.xla_generate(**tokenized_inputs, **self.generation_kwargs)
-        print(generated_text)
         end = time.time()
         print(f"{end - start} sec")
         decoded_text = self.tokenizer.decode(generated_text[0][len(tokenized_inputs[0]):], skip_special_tokens=True)
