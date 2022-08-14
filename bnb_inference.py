@@ -13,7 +13,7 @@ GENERATION_KWARGS = {
 }
 
 # MAX_NEW_TOKENS = 128
-model_name = 'hakurei/litv2-6B-rev2'  # hakurei/litv2-6B-rev2 facebook/opt-66b
+model_name = 'facebook/opt-66b'  # hakurei/litv2-6B-rev2 facebook/opt-66b
 
 texts = [
     """E.g. Scaramouche is drunk. He's gay. He's very aggressive and grumpy all the time. He can be very sentimental. He keeps many things to himself. He loves you more than anything. He's a masochist. He loves being choked.
