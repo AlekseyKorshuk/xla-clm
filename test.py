@@ -11,4 +11,4 @@ from transformers import AutoTokenizer, TFAutoModelForCausalLM, AutoModelForCaus
 # remember: decoder-only models need left-padding
 tokenizer = AutoTokenizer.from_pretrained('facebook/opt-66b', padding_side="left", pad_token="</s>")
 
-print(tokenizer.decode([ 50118]))
+print(str(tokenizer.decode([ 50118])))
