@@ -217,10 +217,10 @@ GENERATION_KWARGS = {
     'eos_token_id': tokenizer("\n").input_ids[0],
     'early_stopping': True,
     # 'do_sample': True,
-    # 'temperature': 0.72,
-    # 'top_k': 0,
-    # 'top_p': 0.725,
-    # 'repetition_penalty': 1.13,
+    'temperature': 0.72,
+    'top_k': 0,
+    'top_p': 0.725,
+    'repetition_penalty': 1.13,
 }
 print(GENERATION_KWARGS)
 free_in_GB = int(torch.cuda.mem_get_info()[0] / 1024 ** 3)
@@ -243,6 +243,4 @@ for text in tqdm.tqdm(texts):
     # with torch.autocast(device_type='cuda', dtype=torch.float16):
     input_ids = tokenizer(text, return_tensors="pt").input_ids
     generated_ids = model.generate(input_ids, **GENERATION_KWARGS)
-    print(input_ids)
-    print(generated_ids[0])
-    print(tokenizer.decode(generated_ids[0][len(input_ids):], skip_special_tokens=True))
+    print(tokenizer.decode(generated_ids[0][len(input_ids[0]):], skip_special_tokens=True))
