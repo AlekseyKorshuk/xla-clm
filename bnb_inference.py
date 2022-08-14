@@ -13,7 +13,7 @@ GENERATION_KWARGS = {
 }
 
 # MAX_NEW_TOKENS = 128
-model_name = 'facebook/opt-66b'
+model_name = 'hakurei/litv2-6B-rev2'  # hakurei/litv2-6B-rev2 facebook/opt-66b
 text = """
 Q: On average Joe throws 25 punches per minute. A fight lasts 5 rounds of 3 minutes. 
 How many punches did he throw?\n
@@ -27,7 +27,7 @@ max_memory = {i: max_memory for i in range(n_gpus)}
 model = AutoModelForCausalLM.from_pretrained(
     model_name,
     device_map='auto',
-    load_in_8bit=False,
+    load_in_8bit=True,
     max_memory=max_memory
 )
 
