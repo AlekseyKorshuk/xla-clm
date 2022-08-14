@@ -13,4 +13,4 @@ tokenizer = AutoTokenizer.from_pretrained('facebook/opt-66b', padding_side="left
 
 print(str(tokenizer.decode([ 50118])))
 
-print(tokenizer("\n").input_ids)
+print(tokenizer("\n", skip_special_tokens=True).input_ids)
