@@ -9,8 +9,8 @@ from transformers import AutoTokenizer, TFAutoModelForCausalLM, AutoModelForCaus
 # 1. Load model and tokenizer
 # model_name = "gpt2"  # hakurei/litv2-6B-rev2
 # remember: decoder-only models need left-padding
-tokenizer = AutoTokenizer.from_pretrained('facebook/opt-66b', padding_side="left", pad_token="</s>")
+tokenizer = AutoTokenizer.from_pretrained('bigscience/bloom', padding_side="left", pad_token="</s>")
 
 print(str(tokenizer.decode([ 50118])))
 
-print(tokenizer("\n", skip_special_tokens=True).input_ids)
+print(tokenizer("\n").input_ids)
