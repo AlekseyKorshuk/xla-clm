@@ -2,7 +2,18 @@ import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import tqdm
 
-MAX_NEW_TOKENS = 128
+
+GENERATION_KWARGS = {
+    "max_new_tokens": 64,
+    'eos_token_id': 198,
+    'do_sample': True,
+    'temperature': 0.72,
+    'top_k': 0,
+    'top_p': 0.725,
+    'repetition_penalty': 1.13,
+}
+
+# MAX_NEW_TOKENS = 128
 model_name = 'facebook/opt-66b'
 text = """
 Q: On average Joe throws 25 punches per minute. A fight lasts 5 rounds of 3 minutes. 
@@ -22,5 +33,5 @@ model = AutoModelForCausalLM.from_pretrained(
 )
 
 for i in tqdm.trange(10):
-    generated_ids = model.generate(input_ids, max_length=MAX_NEW_TOKENS)
+    generated_ids = model.generate(input_ids, **GENERATION_KWARGS)
     print(tokenizer.decode(generated_ids[0], skip_special_tokens=True))
