@@ -243,4 +243,6 @@ for text in tqdm.tqdm(texts):
     # with torch.autocast(device_type='cuda', dtype=torch.float16):
     input_ids = tokenizer(text, return_tensors="pt").input_ids
     generated_ids = model.generate(input_ids, **GENERATION_KWARGS)
+    print(input_ids)
+    print(generated_ids[0])
     print(tokenizer.decode(generated_ids[0][len(input_ids):], skip_special_tokens=True))
