@@ -33,6 +33,7 @@ model = AutoModelForCausalLM.from_pretrained(
     model_name,
 ).to(0)
 
+input("test")
 for i in tqdm.trange(10):
     # with torch.autocast(device_type='cuda', dtype=torch.float16):
     generated_ids = model.generate(input_ids.to(0), **GENERATION_KWARGS)
