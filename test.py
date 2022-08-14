@@ -11,10 +11,10 @@ from transformers import AutoTokenizer, TFAutoModelForCausalLM, AutoModelForCaus
 # remember: decoder-only models need left-padding
 tokenizer = AutoTokenizer.from_pretrained('facebook/opt-66b', padding_side="left", pad_token="</s>")
 
-tokenizer.decode([85, 18, 275, 114, 52, 95, 1095, 964, 734, 50118,
+print(tokenizer.decode([85, 18, 275, 114, 52, 95, 1095, 964, 734, 50118,
                   5096, 35, 7586, 50118, 12645, 16384, 1438, 2871, 4832, 38,
                   581, 460, 657, 47, 53, 38, 240, 7, 517, 15,
                   734, 50118, 5096, 35, 7586, 50118, 12645, 16384, 1438, 2871,
                   4832, 38, 437, 6661, 734, 50118, 5096, 35, 7586, 50118,
                   12645, 16384, 1438, 2871, 4832, 40142, 734, 50118, 5096, 35,
-                  7586, 50118, 12645, 16384])
+                  7586, 50118, 12645, 16384]))
