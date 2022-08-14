@@ -244,3 +244,4 @@ for text in tqdm.tqdm(texts):
     input_ids = tokenizer(text, return_tensors="pt").input_ids
     generated_ids = model.generate(input_ids, **GENERATION_KWARGS)
     print(tokenizer.decode(generated_ids[0][len(input_ids[0]):], skip_special_tokens=True))
+    print(generated_ids[0][len(input_ids[0]):])
