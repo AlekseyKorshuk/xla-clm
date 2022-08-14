@@ -12,3 +12,5 @@ from transformers import AutoTokenizer, TFAutoModelForCausalLM, AutoModelForCaus
 tokenizer = AutoTokenizer.from_pretrained('facebook/opt-66b', padding_side="left", pad_token="</s>")
 
 print(str(tokenizer.decode([ 50118])))
+
+print(tokenizer("\n").input_ids)

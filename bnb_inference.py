@@ -212,6 +212,10 @@ Kidnapper (NSFW):"""
 
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 
+eos_token_id = 198
+if 'opt' in model_name:
+    eos_token_id = 50118
+
 GENERATION_KWARGS = {
     "max_new_tokens": 64,
     'eos_token_id': tokenizer("\n").input_ids[0],
