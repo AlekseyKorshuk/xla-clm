@@ -236,7 +236,7 @@ model = AutoModelForCausalLM.from_pretrained(
 #     model_name,
 # ).to(0)
 
-input("test")
+# input("test")
 for text in tqdm.tqdm(texts):
     # with torch.autocast(device_type='cuda', dtype=torch.float16):
     input_ids = tokenizer(text, return_tensors="pt").input_ids
