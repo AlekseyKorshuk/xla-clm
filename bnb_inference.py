@@ -32,6 +32,6 @@ model = AutoModelForCausalLM.from_pretrained(
 )
 
 for i in tqdm.trange(10):
-    with torch.autocast():
+    with torch.autocast(device_type='cuda'):
         generated_ids = model.generate(input_ids, **GENERATION_KWARGS)
     print(tokenizer.decode(generated_ids[0], skip_special_tokens=True))
