@@ -225,20 +225,20 @@ free_in_GB = int(torch.cuda.mem_get_info()[0] / 1024 ** 3)
 max_memory = f'{free_in_GB - 2}GB'
 n_gpus = torch.cuda.device_count()
 max_memory = {i: max_memory for i in range(n_gpus)}
-# model = AutoModelForCausalLM.from_pretrained(
-#     model_name,
-#     device_map='auto',
-#     load_in_8bit=True,
-#     max_memory=max_memory
-# )
-
 model = AutoModelForCausalLM.from_pretrained(
     model_name,
-).to(0)
+    device_map='auto',
+    load_in_8bit=True,
+    max_memory=max_memory
+)
+
+# model = AutoModelForCausalLM.from_pretrained(
+#     model_name,
+# ).to(0)
 
 input("test")
 for text in tqdm.tqdm(texts):
     # with torch.autocast(device_type='cuda', dtype=torch.float16):
     input_ids = tokenizer(text, return_tensors="pt").input_ids
-    generated_ids = model.generate(input_ids.to(0), **GENERATION_KWARGS)
+    generated_ids = model.generate(input_ids, **GENERATION_KWARGS)
     print(tokenizer.decode(generated_ids[0], skip_special_tokens=True))
