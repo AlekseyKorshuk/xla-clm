@@ -11,6 +11,6 @@ from transformers import AutoTokenizer, TFAutoModelForCausalLM, AutoModelForCaus
 # remember: decoder-only models need left-padding
 tokenizer = AutoTokenizer.from_pretrained('bigscience/bloom', padding_side="left", pad_token="</s>")
 
-print(str(tokenizer.decode([ 50118])))
+print(str(tokenizer.decode([189])))
 
 print(tokenizer("\n").input_ids)

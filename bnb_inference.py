@@ -215,10 +215,12 @@ tokenizer = AutoTokenizer.from_pretrained(model_name)
 eos_token_id = 198
 if 'opt' in model_name:
     eos_token_id = 50118
+elif 'bloom' in model_name:
+    eos_token_id = 189
 
 GENERATION_KWARGS = {
     "max_new_tokens": 64,
-    'eos_token_id': tokenizer("\n").input_ids[0],
+    'eos_token_id': eos_token_id,
     'early_stopping': True,
     # 'do_sample': True,
     'temperature': 0.72,
