@@ -2,7 +2,6 @@ import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import tqdm
 
-
 GENERATION_KWARGS = {
     "max_new_tokens": 64,
     'eos_token_id': 198,
@@ -33,5 +32,6 @@ model = AutoModelForCausalLM.from_pretrained(
 )
 
 for i in tqdm.trange(10):
-    generated_ids = model.generate(input_ids, **GENERATION_KWARGS)
+    with torch.autocast():
+        generated_ids = model.generate(input_ids, **GENERATION_KWARGS)
     print(tokenizer.decode(generated_ids[0], skip_special_tokens=True))
