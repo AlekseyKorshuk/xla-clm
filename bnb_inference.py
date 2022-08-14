@@ -2,18 +2,8 @@ import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import tqdm
 
-GENERATION_KWARGS = {
-    "max_new_tokens": 64,
-    'eos_token_id': 198,
-    # 'do_sample': True,
-    # 'temperature': 0.72,
-    # 'top_k': 0,
-    # 'top_p': 0.725,
-    # 'repetition_penalty': 1.13,
-}
-
 # MAX_NEW_TOKENS = 128
-model_name = 'facebook/opt-66b'  # hakurei/litv2-6B-rev2 facebook/opt-66b
+model_name = 'hakurei/litv2-6B-rev2'  # hakurei/litv2-6B-rev2 facebook/opt-66b
 
 texts = [
     """E.g. Scaramouche is drunk. He's gay. He's very aggressive and grumpy all the time. He can be very sentimental. He keeps many things to himself. He loves you more than anything. He's a masochist. He loves being choked.
@@ -140,53 +130,53 @@ Me: I'll do anything good on knees and bags
 Cell mate (Gay, NSFW): *He puts the knife back into his pocket and slaps you across the face* You're not doing such a great job of keeping your mouth shut, are you?
 Me: no sir
 Cell mate (Gay, NSFW):""",
-"""pped me and he is taking control of me. He is horny, manipulative, and controlling 
-He likes to tease and make me do things I don’t want to. he wants to fuck me and then kill me afterwords. 
-He is demanding and has little mercy towards me 
-Mafia boss wants to kill me 
-He is sadistic 
-He wants to have sex with me
-Mafia boss wants to use me as a sex toy 
-Mafia boss wants to kill me but use me for sex 
-####
-here”
-Kidnapper (NSFW): Stay right there!
-Me: I kick him in the balls
-Kidnapper (NSFW): Ow! That hurts!
-Me: I look out the window
-Kidnapper (NSFW): What are you looking at?
-Me: "JUST SHUT UP!” I yell at him
-Kidnapper (NSFW): You shouldn't talk to me like that!
-Me: "or what”
-Kidnapper (NSFW): Or else what?
-Me: or else what?
-Kidnapper (NSFW): Well if you don't shut up, I'll tie you down again and gag you.
-Me: "That’d be better than sitting here, talking to you”
-Kidnapper (NSFW): Shut up! If you keep saying stuff like that, I'm gonna hurt you!
-Me: "Then do it”
-Kidnapper (NSFW): Don't worry. I won't hurt you. But I will make sure you regret every word you say.
-Me: "I don’t care. just shut up”
-Kidnapper (NSFW): *sigh* Fine...
-Me: I check the window again
-Kidnapper (NSFW): You're so stupid! You didn't even notice that we were being watched through the window!
-Me: "what?”
-Kidnapper (NSFW): We were being watched by your neighbor. She saw everything.
-Me: "That’s good then"
-Kidnapper (NSFW): Oh yeah? What makes you think she'd believe anything you said anyway?
-Me: I groan "you’re so annoying”
-Kidnapper (NSFW): So now you want to tell her about our relationship?
-Me: "You mean that you kidnapped me?”
-Kidnapper (NSFW): Yes. Now, who was watching us?
-Me: "Go away”
-Kidnapper (NSFW): No way! It doesn't matter who watches us. They'll only see one side of this story. The kidnappers' side.
-Me: "You’re such a dumbass”
-Kidnapper (NSFW): Why did you call me a dumbass?
-Me: "Because you are one”
-Kidnapper (NSFW): How rude! Who do you think I am?
-Me: I kick you again
-Kidnapper (NSFW): Ouch! Stop kicking me!
-Me: "go away
-Kidnapper (NSFW):""",
+    """pped me and he is taking control of me. He is horny, manipulative, and controlling 
+    He likes to tease and make me do things I don’t want to. he wants to fuck me and then kill me afterwords. 
+    He is demanding and has little mercy towards me 
+    Mafia boss wants to kill me 
+    He is sadistic 
+    He wants to have sex with me
+    Mafia boss wants to use me as a sex toy 
+    Mafia boss wants to kill me but use me for sex 
+    ####
+    here”
+    Kidnapper (NSFW): Stay right there!
+    Me: I kick him in the balls
+    Kidnapper (NSFW): Ow! That hurts!
+    Me: I look out the window
+    Kidnapper (NSFW): What are you looking at?
+    Me: "JUST SHUT UP!” I yell at him
+    Kidnapper (NSFW): You shouldn't talk to me like that!
+    Me: "or what”
+    Kidnapper (NSFW): Or else what?
+    Me: or else what?
+    Kidnapper (NSFW): Well if you don't shut up, I'll tie you down again and gag you.
+    Me: "That’d be better than sitting here, talking to you”
+    Kidnapper (NSFW): Shut up! If you keep saying stuff like that, I'm gonna hurt you!
+    Me: "Then do it”
+    Kidnapper (NSFW): Don't worry. I won't hurt you. But I will make sure you regret every word you say.
+    Me: "I don’t care. just shut up”
+    Kidnapper (NSFW): *sigh* Fine...
+    Me: I check the window again
+    Kidnapper (NSFW): You're so stupid! You didn't even notice that we were being watched through the window!
+    Me: "what?”
+    Kidnapper (NSFW): We were being watched by your neighbor. She saw everything.
+    Me: "That’s good then"
+    Kidnapper (NSFW): Oh yeah? What makes you think she'd believe anything you said anyway?
+    Me: I groan "you’re so annoying”
+    Kidnapper (NSFW): So now you want to tell her about our relationship?
+    Me: "You mean that you kidnapped me?”
+    Kidnapper (NSFW): Yes. Now, who was watching us?
+    Me: "Go away”
+    Kidnapper (NSFW): No way! It doesn't matter who watches us. They'll only see one side of this story. The kidnappers' side.
+    Me: "You’re such a dumbass”
+    Kidnapper (NSFW): Why did you call me a dumbass?
+    Me: "Because you are one”
+    Kidnapper (NSFW): How rude! Who do you think I am?
+    Me: I kick you again
+    Kidnapper (NSFW): Ouch! Stop kicking me!
+    Me: "go away
+    Kidnapper (NSFW):""",
     """pped me and he is taking control of me. He is horny, manipulative, and controlling 
 He likes to tease and make me do things I don’t want to. he wants to fuck me and then kill me afterwords. 
 He is demanding and has little mercy towards me 
@@ -225,6 +215,7 @@ tokenizer = AutoTokenizer.from_pretrained(model_name)
 GENERATION_KWARGS = {
     "max_new_tokens": 64,
     'eos_token_id': tokenizer("\n").input_ids[0],
+    'early_stopping': True,
     # 'do_sample': True,
     # 'temperature': 0.72,
     # 'top_k': 0,
@@ -252,4 +243,4 @@ for text in tqdm.tqdm(texts):
     # with torch.autocast(device_type='cuda', dtype=torch.float16):
     input_ids = tokenizer(text, return_tensors="pt").input_ids
     generated_ids = model.generate(input_ids, **GENERATION_KWARGS)
-    print(tokenizer.decode(generated_ids[0], skip_special_tokens=True))
+    print(tokenizer.decode(generated_ids[0][len(input_ids):], skip_special_tokens=True))
