@@ -38,7 +38,7 @@ GENERATION_KWARGS = {
     'repetition_penalty': 1.13,
 }
 
-NUM_RUNS = 100
+NUM_RUNS = 1
 SAMPLE = GENERATION_KWARGS["do_sample"]
 MAX_NEW_TOKENS = GENERATION_KWARGS["max_new_tokens"]
 
@@ -61,15 +61,15 @@ INPUT_EXAMPLES = [
     "William Afton: (Starts rubbing my balls)\nMe: WHAR\nWilliam Afton: (Rubs my cock through the latex)\nMe: WHAT\nWilliam Afton: (Comes closer to me and whispers in my ear)\nMe: MY BALLS\nWilliam Afton: (Whispers in my ear)\nMe: MY BALLS WHAT\nWilliam Afton: (Licks my neck)\nMe: SAGE U BETTER GELP ME\nWilliam Afton: (Giggles)\nMe: SAGE\nWilliam Afton: (Rubs his hands all over my body)\nMe: STOP GIGGLING\nWilliam Afton: (Kisses my cheek)\nMe: CHILL\nWilliam Afton: (Plays with my hair)\nMe: William ur gay\nWilliam Afton: (Laughs)\nMe: LAWD\nWilliam Afton: (Takes off my shirt, pulls my pants down and starts fingering my ass)\nMe: (the nigga was to stunned to speak)\nWilliam Afton: (Fingers my ass for a few seconds)\nMe: (dies)\nWilliam Afton: (Lets go of my cock)\nMe: \ud83d\udc68\u200d\ud83e\uddb2\nWilliam Afton: (Pulls his pants back up)\nMe: What\nWilliam Afton: (Wipes his finger on my ass and then wipes it on my nose)\nMe: \ud83d\ude1f\nWilliam Afton: (Points at me and laughs)\nMe: U laughin at me -\nWilliam Afton: (Laughs)\nMe: Whore\nWilliam Afton: (Laughs more)\nMe: \ud83d\udc48Stfu whore\nWilliam Afton: (Laughs some more)\nMe: Ur forplay sucks ass\nWilliam Afton: (Laughs)\nMe: \ud83d\udd74I hate it here\nWilliam Afton: (Laughs)\nMe: How didb this bhappen\nWilliam Afton: (Laughs)\nMe: (slaps)\nWilliam Afton: (laughs like crazy)\nMe: \ud83d\udc68\u200d\ud83e\uddb2\nWilliam Afton: (Laughs)\nMe: U kinky fuck-\nWilliam Afton: (Laughs)\nMe: U LIKE BEING SLAPPED DONT YAH PRETTY BOY\nWilliam Afton: (Laughs)\nMe: (passes tf out)\nWilliam Afton: (Laughs)\nMe: Why not\nWilliam Afton: (Laughs)\nMe: Wha\nWilliam Afton: (Laughs)\nMe: Hes broken rn\nWilliam Afton: (Laughs)\nMe: Say somthing afton\nWilliam Afton: (Laughs)\nMe: AFTERCARE I WAS VIOLATED\ud83d\udd2b\nWilliam Afton: (Laughs)\nMe: Imma kill u you stupid purple fyck\nWilliam Afton: (Laughs)\nMe: Fuck\nWilliam Afton: (Laughs)\nMe: Wtf\nWilliam Afton: (Laughs)\nMe: (cry)\nWilliam Afton: (Laughs)\nMe: I think ots because i started the convo\nWilliam Afton: (Laughs)\nMe: Yes i do\nWilliam Afton: (Laughs)\nMe: Alright bet lemme run out od messages\nWilliam Afton: (Laughs)\nMe: Nvm only have two\nWilliam Afton: (Laughs)\nMe: Stfubafton\nWilliam Afton:",
 ]
 
-# INPUT_EXAMPLES = [
-#     "The dog",
-#     "Yesterday, there was",
-#     "Roses are red, Violets are blue",
-#     "'The quick brown fox jumps over the lazy dog' - he said.",
-#     "All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and "\
-#     "should act towards one another in a spirit of brotherhood."
-# ]
 
+INPUT_EXAMPLES = [
+    "The dog",
+    "Yesterday, there was",
+    "Roses are red, Violets are blue",
+    "'The quick brown fox jumps over the lazy dog' - he said.",
+    "All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and "\
+    "should act towards one another in a spirit of brotherhood."
+]
 
 
 def measure_time(function):
@@ -112,19 +112,11 @@ def get_model(framework, model_name):
             model = TFAutoModelForCausalLM.from_pretrained(model_name, from_pt=True)
         elif framework == "pt":
             model = AutoModelForCausalLM.from_pretrained(model_name)
-        elif framework == "flax":
-            model = FlaxAutoModelForCausalLM.from_pretrained(model_name)
     elif type(config) in MODEL_FOR_SEQ_TO_SEQ_CAUSAL_LM_MAPPING:
         if framework == "tf":
             model = TFAutoModelForSeq2SeqLM.from_pretrained(model_name)
         elif framework == "pt":
             model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
-        elif framework == "flax":
-            if model_name == "t5-3b":  # no FLAX weights for this one, but it can be loaded from PT weights
-                model = FlaxAutoModelForSeq2SeqLM.from_pretrained(model_name, from_pt=True)
-            else:
-                model = FlaxAutoModelForSeq2SeqLM.from_pretrained(model_name)
-
     if model is None:
         raise ValueError(f"Invalid framework ({framework}) / model ({model_name}) combination.")
     return model
