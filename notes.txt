@@ -1,3 +1,8 @@
 pip install accelerate
 pip install bitsandbytes
 pip install git+https://github.com/huggingface/transformers.git
+
+
+git clone https://github.com/AlekseyKorshuk/xla-clm && \
+    cd xla-clm && \
+    pip install accelerate bitsandbytes git+https://github.com/huggingface/transformers.git evaluate sklearn tensorflow

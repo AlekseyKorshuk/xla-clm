@@ -17,12 +17,12 @@ spec:
       resources:
         limits:
           cpu: "1"
-          nvidia.com/gpu: "4"
-          memory: 450Gi
+          nvidia.com/gpu: "1"
+          memory: 128Gi
         requests:
           cpu: "1"
-          nvidia.com/gpu: "4"
-          memory: 450Gi
+          nvidia.com/gpu: "1"
+          memory: 128Gi
       readinessProbe:
         exec:
           command:
