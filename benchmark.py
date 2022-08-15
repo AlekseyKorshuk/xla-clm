@@ -109,7 +109,7 @@ def get_model(framework, model_name):
 
     if type(config) in MODEL_FOR_CAUSAL_LM_MAPPING:
         if framework == "tf":
-            model = TFAutoModelForCausalLM.from_pretrained(model_name, from_pt=False)
+            model = TFAutoModelForCausalLM.from_pretrained(model_name, from_pt=True)
         elif framework == "pt":
             model = AutoModelForCausalLM.from_pretrained(model_name)
         elif framework == "flax":
@@ -252,9 +252,9 @@ def check_outputs(pt_out, eager_out, xla_out):
 if __name__ == "__main__":
     print("\n\nPYTORCH")
     pt_out = main_pt()
-    # print("\n\nTF (NO XLA)")
-    # eager_out = main_tf_eager()
-    eager_out = None
+    print("\n\nTF (NO XLA)")
+    eager_out = main_tf_eager()
+    # eager_out = None
     print("\n\nTF (XLA)")
     xla_out = main_tf_xla()
     check_outputs(pt_out, eager_out, xla_out)
