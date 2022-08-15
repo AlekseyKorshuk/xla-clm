@@ -26,7 +26,7 @@ from transformers import (
     MODEL_FOR_SEQ_TO_SEQ_CAUSAL_LM_MAPPING, AutoModelForSeq2SeqLM, TFAutoModelForSeq2SeqLM, FlaxAutoModelForSeq2SeqLM,
 )
 
-MODEL_NAME = "hakurei/litv2-6B-rev2"  # hakurei/litv2-6B-rev2
+MODEL_NAME = "gpt2"  # hakurei/litv2-6B-rev2
 
 GENERATION_KWARGS = {
     "max_new_tokens": 64,
