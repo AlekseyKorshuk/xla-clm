@@ -243,9 +243,9 @@ def check_outputs(pt_out, eager_out, xla_out):
 if __name__ == "__main__":
     print("\n\nPYTORCH")
     pt_out = main_pt()
-    print("\n\nTF (NO XLA)")
-    eager_out = main_tf_eager()
-    # eager_out = None
+    eager_out = None
+    # print("\n\nTF (NO XLA)")
+    # eager_out = main_tf_eager()
     print("\n\nTF (XLA)")
     xla_out = main_tf_xla()
     check_outputs(pt_out, eager_out, xla_out)
