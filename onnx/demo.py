@@ -1,17 +1,12 @@
-# from optimum_transformers import pipeline
-#
-# # Initialize a pipeline by passing the task name and
-# # set onnx to True (default value is also True)
-# nlp = pipeline("text-generation", "gpt2", use_onnx=True)
-# nlp("Transformers and onnx runtime is an awesome")
-# # [{'label': 'POSITIVE', 'score': 0.999721109867096}]
+from transformers import AutoTokenizer
+from onnxruntime import InferenceSession
+import tqdm
 
-from optimum_transformers import Benchmark
+tokenizer = AutoTokenizer.from_pretrained("hakurei/litv2-6B-rev2")
+session = InferenceSession("onnx/model.onnx", providers=["CUDAExecutionProvider"])
+# ONNX Runtime expects NumPy arrays as input
+inputs = tokenizer("Using DistilBERT with ONNX Runtime!", return_tensors="np")
 
-task = "text-generation"
-model_name = "gpt2"
-num_tests = 3
-
-benchmark = Benchmark(task, model_name)
-results = benchmark(num_tests, plot=True)
-print(results)
+for _ in tqdm.trange(10):
+    for _ in tqdm.trange(10):
+        outputs = session.run(output_names=["last_hidden_state"], input_feed=dict(inputs))
