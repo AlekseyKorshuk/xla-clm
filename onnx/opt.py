@@ -36,17 +36,25 @@ cls_pipeline = pipeline("text-generation", model=model, tokenizer=tokenizer, dev
 results = cls_pipeline("I love burritos!")
 print(results)
 
-# inputs = tokenizer("Using DistilBERT with ONNX Runtime!", return_tensors="pt")
+inputs = tokenizer("Using DistilBERT with ONNX Runtime!", return_tensors="pt").to(0)
 
 print("ONNX")
-for _ in tqdm.trange(1):
+for _ in range(1):
     for _ in tqdm.trange(10):
-        cls_pipeline("I love burritos!")
+        cls_pipeline("I love burritos!", do_sample=False)
         # outputs = session.run(output_names=["last_hidden_state"], input_feed=dict(inputs))
+for _ in range(1):
+    for _ in tqdm.trange(10):
+        model(**inputs)
+        # cls_pipeline("I love burritos!", do_sample=False)
 
 print("Pytorch")
 model = AutoModelForCausalLM.from_pretrained(model_checkpoint).to(0)
 cls_pipeline = pipeline("text-generation", model=model, tokenizer=tokenizer, device=0)
-for _ in tqdm.trange(1):
+
+for _ in range(1):
     for _ in tqdm.trange(10):
-        cls_pipeline("I love burritos!")
+        cls_pipeline("I love burritos!", do_sample=False)
+for _ in range(1):
+    for _ in tqdm.trange(10):
+        model(**inputs)
