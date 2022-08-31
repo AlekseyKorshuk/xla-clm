@@ -11,7 +11,7 @@ INPUT_EXAMPLES = dataset["train"]["text"][:10]
 
 local_rank = int(os.getenv('LOCAL_RANK', '0'))
 world_size = int(os.getenv('WORLD_SIZE', '1'))
-generator = pipeline('text-generation', model='gpt2',
+generator = pipeline('text-generation', model='EleutherAI/gpt-j-6B',
                      device=local_rank)
 
 generator.model = deepspeed.init_inference(generator.model,
