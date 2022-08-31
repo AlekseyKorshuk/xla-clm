@@ -39,5 +39,6 @@ GENERATION_KWARGS = {
 }
 ner_results = ds_clf(example, max_new_tokens=64, do_sample=True)
 print(ner_results)
+import pdb; pdb.set_trace()
 ner_results = ds_clf(input_text, max_new_tokens=64, do_sample=True)
 print(ner_results)
