@@ -1,5 +1,5 @@
 import torch
-from transformers import AutoTokenizer, AutoModelForTokenClassification, pipeline, AutoModelForCausalLM
+from transformers import AutoTokenizer, AutoModelForTokenClassification, pipeline, AutoModelForCausalLM,GPTJForCausalLM
 from transformers import pipeline
 from deepspeed.module_inject import HFBertLayerPolicy
 import deepspeed
@@ -21,11 +21,11 @@ GENERATION_KWARGS = {
 }
 
 # Model Repository on huggingface.co
-model_id = "gpt2"
+model_id = "EleutherAI/gpt-j-6B"
 
 # load model and tokenizer
 tokenizer = AutoTokenizer.from_pretrained(model_id)
-model = AutoModelForCausalLM.from_pretrained(model_id)
+model = GPTJForCausalLM.from_pretrained(model_id)
 
 # init deepspeed inference engine
 ds_model = deepspeed.init_inference(
