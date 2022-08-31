@@ -22,7 +22,7 @@ GENERATION_KWARGS = {
     "max_new_tokens": 64,
     # "min_new_tokens": 8,
     'eos_token_id': 198,
-    'do_sample': True,
+    'do_sample': False,
     'pad_token_id': 198,
     'temperature': 0.72,
     'top_k': 0,
