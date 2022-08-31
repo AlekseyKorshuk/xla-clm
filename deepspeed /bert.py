@@ -5,7 +5,9 @@ from deepspeed.module_inject import HFBertLayerPolicy
 import deepspeed
 import tqdm
 from datasets import load_dataset
+import warnings
 
+warnings.filterwarnings("ignore")
 dataset = load_dataset("ChaiML/user_model_inputs")
 # Model Repository on huggingface.co
 model_id = "hakurei/litv2-6B-rev2"
