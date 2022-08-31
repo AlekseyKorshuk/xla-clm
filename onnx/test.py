@@ -1,5 +1,5 @@
 import os
-from test.onnxruntime import ORTModelForCausalLM
+from optimum.onnxruntime import ORTModelForCausalLM
 from transformers import AutoTokenizer, pipeline
 
 model_checkpoint = "hakurei/litv2-6B-rev2"
