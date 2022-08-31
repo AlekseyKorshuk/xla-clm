@@ -35,7 +35,7 @@ INPUT_EXAMPLES = dataset["train"]["text"][:10]
 print("Pytorch")
 torch_outputs = []
 for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Pytorch"):
-    torch_output = torch_pipe(example, **GENERATION_KWARGS)[0]["generated_text"][len(example):]
+    torch_output = torch_pipe(example, **GENERATION_KWARGS)[0]["generated_text"]
     torch_outputs.append(torch_output)
 # print(torch_output)
 # init deepspeed inference engine
@@ -54,16 +54,16 @@ ds_clf = pipeline("text-generation", model=ds_model, tokenizer=tokenizer, device
 print("Accelerated")
 accelerated_outputs = []
 for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Accelerated"):
-    accelerated_output = ds_clf(example, **GENERATION_KWARGS)[0]["generated_text"][len(example):]
+    accelerated_output = ds_clf(example, **GENERATION_KWARGS)[0]["generated_text"]
     accelerated_outputs.append(accelerated_output)
 
 difference = list(set(torch_outputs) - set(accelerated_outputs))
 print(len(difference))
 
 for a, b in zip(torch_outputs, accelerated_outputs):
-    print("#"*10)
+    print("#" * 10)
     print(a)
-    print("-"*10)
+    print("-" * 10)
     print(b)
 # print(accelerated_output)
 #
