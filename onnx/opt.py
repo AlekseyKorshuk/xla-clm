@@ -41,7 +41,8 @@ inputs = tokenizer("Using DistilBERT with ONNX Runtime!", return_tensors="pt").t
 print("ONNX")
 for _ in range(1):
     for _ in tqdm.trange(10):
-        opt_pipeline("I love burritos!", do_sample=False)
+        # opt_pipeline("I love burritos!", do_sample=False)
+        opt_pipeline.model.generate(**inputs)
         # outputs = session.run(output_names=["last_hidden_state"], input_feed=dict(inputs))
 for _ in range(1):
     for _ in tqdm.trange(1000):
@@ -54,7 +55,8 @@ torch_pipeline = pipeline("text-generation", model_checkpoint, device=0)
 
 for _ in range(1):
     for _ in tqdm.trange(10):
-        torch_pipeline("I love burritos!", do_sample=False)
+        torch_pipeline.model.generate(**inputs)
+        # torch_pipeline("I love burritos!", do_sample=False)
 for _ in range(1):
     for _ in tqdm.trange(1000):
         torch_pipeline.model(**inputs)
