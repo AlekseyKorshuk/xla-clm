@@ -56,7 +56,7 @@ ds_clf = pipeline("text-generation", model=ds_model, tokenizer=tokenizer, device
 print("Accelerated")
 accelerated_outputs = []
 for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Accelerated"):
-    accelerated_output = ds_clf(example, **GENERATION_KWARGS)
+    accelerated_output = ds_clf(example, **GENERATION_KWARGS)[0]["generated_text"]
     accelerated_outputs.append(accelerated_output)
 
 difference = list(set(torch_outputs) - set(accelerated_outputs))
