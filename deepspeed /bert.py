@@ -5,7 +5,7 @@ from deepspeed.module_inject import HFBertLayerPolicy
 import deepspeed
 
 # Model Repository on huggingface.co
-model_id = "gpt2"
+model_id = "hakurei/litv2-6B-rev2"
 
 # load model and tokenizer
 tokenizer = AutoTokenizer.from_pretrained(model_id)
