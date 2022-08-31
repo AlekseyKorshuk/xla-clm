@@ -10,15 +10,28 @@ file_name = "model.onnx"
 onnx_path = os.path.join(save_directory, "model.onnx")
 
 # Load a model from transformers and export it through the ONNX format
-model = ORTModelForCausalLM.from_pretrained(model_checkpoint, from_transformers=True)
+model = ORTModelForCausalLM.from_pretrained(save_directory, file_name=file_name)
 tokenizer = AutoTokenizer.from_pretrained(model_checkpoint)
 
+"""defaultly placed on cpu"""
+
+print(model.device)
+
+"""check if GPU is available an move to GPU"""
+
+import torch
+
+if torch.cuda.is_available():
+    model.to(torch.device("cuda"))
+
+print(model.device)
+
 # Save the onnx model and tokenizer
-model.save_pretrained(save_directory, file_name=file_name)
-tokenizer.save_pretrained(save_directory)
+# model.save_pretrained(save_directory, file_name=file_name)
+# tokenizer.save_pretrained(save_directory)
 
 
-cls_pipeline = pipeline("text-generation", model=model, tokenizer=tokenizer)
+cls_pipeline = pipeline("text-generation", model=model, tokenizer=tokenizer, device=0)
 
 results = cls_pipeline("I love burritos!")
 print(results)
