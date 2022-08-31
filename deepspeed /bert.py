@@ -25,10 +25,10 @@ GENERATION_KWARGS = {
     'eos_token_id': 198,
     'do_sample': True,
     'pad_token_id': 198,
-    'temperature': 0.72,
-    'top_k': 0,
-    'top_p': 0.725,
-    'repetition_penalty': 1.13,
+    # 'temperature': 0.72,
+    # 'top_k': 0,
+    # 'top_p': 0.725,
+    # 'repetition_penalty': 1.13,
 }
 
 INPUT_EXAMPLES = dataset["train"]["text"][:10]
