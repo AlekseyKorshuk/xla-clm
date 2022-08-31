@@ -9,8 +9,8 @@ input_text = "William Afton: (Starts rubbing my balls)\nMe: WHAR\nWilliam Afton:
 
 GENERATION_KWARGS = {
     "max_new_tokens": 64,
-    'eos_token_id': 198,
-    # 'do_sample': True,
+    # 'eos_token_id': 198,
+    'do_sample': True,
     # 'temperature': 0.72,
     # 'top_k': 0,
     # 'top_p': 0.725,
