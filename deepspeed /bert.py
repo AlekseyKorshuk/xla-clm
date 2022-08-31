@@ -10,7 +10,7 @@ import warnings
 warnings.filterwarnings("ignore")
 dataset = load_dataset("ChaiML/user_model_inputs")
 # Model Repository on huggingface.co
-model_id = "EleutherAI/gpt-j-6B"
+model_id = "hakurei/litv2-6B-rev2"
 # model_id = "gpt2"
 
 # load model and tokenizer
@@ -30,7 +30,7 @@ GENERATION_KWARGS = {
     'repetition_penalty': 1.13,
 }
 
-INPUT_EXAMPLES = dataset["train"]["text"][:10]
+INPUT_EXAMPLES = dataset["train"]["text"][:100]
 
 torch_pipe = pipeline("text-generation", model=model, tokenizer=tokenizer, device=0)
 print("Pytorch")
