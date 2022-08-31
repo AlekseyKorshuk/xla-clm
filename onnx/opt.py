@@ -10,30 +10,30 @@ file_name = "model.onnx"
 onnx_path = os.path.join(save_directory, "model.onnx")
 
 # Load a model from transformers and export it through the ONNX format
-model = ORTModelForCausalLM.from_pretrained(model_checkpoint, from_transformers=True)
+opt_model = ORTModelForCausalLM.from_pretrained(model_checkpoint, from_transformers=True)
 tokenizer = AutoTokenizer.from_pretrained(model_checkpoint)
 
 """defaultly placed on cpu"""
 
-print(model.device)
+print(opt_model.device)
 
 """check if GPU is available an move to GPU"""
 
 import torch
 
 if torch.cuda.is_available():
-    model.to(torch.device("cuda"))
+    opt_model.to(torch.device("cuda"))
 
-print(model.device)
+print(opt_model.device)
 
 # Save the onnx model and tokenizer
 # model.save_pretrained(save_directory, file_name=file_name)
 # tokenizer.save_pretrained(save_directory)
 
 
-cls_pipeline = pipeline("text-generation", model=model, tokenizer=tokenizer, device=0)
+opt_pipeline = pipeline("text-generation", model=opt_model, tokenizer=tokenizer, device=0)
 
-results = cls_pipeline("I love burritos!")
+results = opt_pipeline("I love burritos!")
 print(results)
 
 inputs = tokenizer("Using DistilBERT with ONNX Runtime!", return_tensors="pt").to(0)
@@ -41,20 +41,20 @@ inputs = tokenizer("Using DistilBERT with ONNX Runtime!", return_tensors="pt").t
 print("ONNX")
 for _ in range(1):
     for _ in tqdm.trange(10):
-        cls_pipeline("I love burritos!", do_sample=False)
+        opt_pipeline("I love burritos!", do_sample=False)
         # outputs = session.run(output_names=["last_hidden_state"], input_feed=dict(inputs))
 for _ in range(1):
-    for _ in tqdm.trange(10):
-        model(**inputs)
+    for _ in tqdm.trange(1000):
+        opt_pipeline.model(**inputs)
         # cls_pipeline("I love burritos!", do_sample=False)
 
 print("Pytorch")
-model = AutoModelForCausalLM.from_pretrained(model_checkpoint).to(0)
-cls_pipeline = pipeline("text-generation", model=model, tokenizer=tokenizer, device=0)
+# model = AutoModelForCausalLM.from_pretrained(model_checkpoint).to(0)
+torch_pipeline = pipeline("text-generation", model_checkpoint, device=0)
 
 for _ in range(1):
     for _ in tqdm.trange(10):
-        cls_pipeline("I love burritos!", do_sample=False)
+        torch_pipeline("I love burritos!", do_sample=False)
 for _ in range(1):
-    for _ in tqdm.trange(10):
-        model(**inputs)
+    for _ in tqdm.trange(1000):
+        torch_pipeline.model(**inputs)
