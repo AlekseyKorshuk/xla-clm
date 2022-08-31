@@ -21,6 +21,7 @@ torch_pipe = pipeline("text-generation", model=model, tokenizer=tokenizer, devic
 # Test pipeline
 GENERATION_KWARGS = {
     "max_new_tokens": 32,
+    "min_new_tokens": 4,
     'eos_token_id': 198,
     'do_sample': True,
     'pad_token_id': 198,
