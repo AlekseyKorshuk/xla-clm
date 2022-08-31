@@ -22,7 +22,7 @@ example1 = "ear's Fright and tried to kill the night guard, who is Michael, Henr
 GENERATION_KWARGS = {
     "max_new_tokens": 32,
     'eos_token_id': 198,
-    'do_sample': False,
+    'do_sample': True,
     'temperature': 0.72,
     'top_k': 0,
     'top_p': 0.725,
@@ -32,7 +32,7 @@ GENERATION_KWARGS = {
 INPUT_EXAMPLES = dataset["train"]["text"][:100]
 
 print("Pytorch")
-for example in tqdm.tqdm(INPUT_EXAMPLES):
+for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Pytorch"):
     torch_output = torch_pipe(example, **GENERATION_KWARGS)
 print(torch_output)
 # init deepspeed inference engine
@@ -49,7 +49,7 @@ ds_model = deepspeed.init_inference(
 ds_clf = pipeline("text-generation", model=ds_model, tokenizer=tokenizer, device=0)
 
 print("Accelerated")
-for example in tqdm.tqdm(INPUT_EXAMPLES):
+for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Accelerated"):
     accelerated_output = ds_clf(example, **GENERATION_KWARGS)
 print(accelerated_output)
 #
