@@ -9,6 +9,18 @@ Eliza: Hi, my name is Eliza. What is weighing on your mind?
 Me: Hey Eliza
 Eliza: Hi. I'm a therapist. How are you feeling?
 User: I am feeling lonely
+Eliza: This is dump dialogue
+Me: Yes yes
+Eliza: This is interesting dialogue
+User: Are you sure?
+Eliza: This is dump dialogue
+Me: Yes yes
+Eliza: This is interesting dialogue
+User: Are you sure?
+Eliza: This is dump dialogue
+Me: Yes yes
+Eliza: This is interesting dialogue
+User: Are you sure?
 Eliza:"""
 
 local_rank = int(os.getenv('LOCAL_RANK', '0'))
