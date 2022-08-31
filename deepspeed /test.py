@@ -2,30 +2,16 @@ import os
 import deepspeed
 import torch
 from transformers import pipeline
+from datasets import load_dataset
 
-prompt = """Eliza is a therapist and she loves to listen and help.
+dataset = load_dataset("ChaiML/user_model_inputs")
 
-Eliza: Hi, my name is Eliza. What is weighing on your mind?
-Me: Hey Eliza
-Eliza: Hi. I'm a therapist. How are you feeling?
-User: I am feeling lonely
-Eliza: This is dump dialogue
-Me: Yes yes
-Eliza: This is interesting dialogue
-User: Are you sure?
-Eliza: This is dump dialogue
-Me: Yes yes
-Eliza: This is interesting dialogue
-User: Are you sure?
-Eliza: This is dump dialogue
-Me: Yes yes
-Eliza: This is interesting dialogue
-User: Are you sure?
-Eliza:"""
+INPUT_EXAMPLES = dataset["train"]["text"][:10]
+
 
 local_rank = int(os.getenv('LOCAL_RANK', '0'))
 world_size = int(os.getenv('WORLD_SIZE', '1'))
-generator = pipeline('text-generation', model='EleutherAI/gpt-j-6B',
+generator = pipeline('text-generation', model='gpt2',
                      device=local_rank)
 
 generator.model = deepspeed.init_inference(generator.model,
@@ -34,8 +20,6 @@ generator.model = deepspeed.init_inference(generator.model,
                                            replace_method='auto',
                                            replace_with_kernel_inject=True)
 
-generated_text = generator("Deepspeed is", do_sample=False, max_new_tokens=50, eos_token_id=198)[0]["generated_text"]
-print(generated_text)
-
-generated_text = generator(prompt, do_sample=False, max_new_tokens=50, eos_token_id=198)[0]["generated_text"]
-print(generated_text)
+for example in INPUT_EXAMPLES:
+    string = generator(example, do_sample=False, max_new_tokens=50)[0]["generated_text"][len(example):]
+    print(string)
