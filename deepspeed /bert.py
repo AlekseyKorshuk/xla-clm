@@ -23,10 +23,10 @@ GENERATION_KWARGS = {
     "max_new_tokens": 32,
     'eos_token_id': 198,
     'do_sample': False,
-    'temperature': 0.72,
-    'top_k': 0,
-    'top_p': 0.725,
-    'repetition_penalty': 1.13,
+    # 'temperature': 0.72,
+    # 'top_k': 0,
+    # 'top_p': 0.725,
+    # 'repetition_penalty': 1.13,
 }
 
 INPUT_EXAMPLES = dataset["train"]["text"][:100]
@@ -41,7 +41,7 @@ for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Pytorch"):
 ds_model = deepspeed.init_inference(
     model=model,  # Transformers models
     mp_size=1,  # Number of GPU
-    dtype=torch.float32,  # dtype of the weights (fp16)
+    # dtype=torch.float32,  # dtype of the weights (fp16)
     # injection_policy={"BertLayer" : HFBertLayerPolicy}, # replace BertLayer with DS HFBertLayerPolicy
     replace_method="auto",  # Lets DS autmatically identify the layer to replace
     replace_with_kernel_inject=True,  # replace the model with the kernel injector
