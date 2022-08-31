@@ -15,7 +15,7 @@ model = AutoModelForCausalLM.from_pretrained(model_id)
 ds_model = deepspeed.init_inference(
     model=model,  # Transformers models
     mp_size=1,  # Number of GPU
-    dtype=torch.half,  # dtype of the weights (fp16)
+    dtype=torch.float32,  # dtype of the weights (fp16)
     # injection_policy={"BertLayer" : HFBertLayerPolicy}, # replace BertLayer with DS HFBertLayerPolicy
     replace_method="auto",  # Lets DS autmatically identify the layer to replace
     replace_with_kernel_inject=True,  # replace the model with the kernel injector
@@ -45,7 +45,7 @@ import pdb; pdb.set_trace()
 
 ner_results = ds_clf(input_text, max_new_tokens=64, do_sample=True)
 print(ner_results)
-
+tokenizer(input_text, return_tensors="pt").to(0)
 ds_clf("a"*3000, max_new_tokens=64, do_sample=True)
 
 tokenizer("a"*3000, return_tensors="pt").input_ids.size()
