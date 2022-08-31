@@ -58,14 +58,20 @@ for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Accelerated"):
     accelerated_output = ds_clf(example, **GENERATION_KWARGS)[0]["generated_text"][len(example):]
     accelerated_outputs.append(accelerated_output)
 
+
 difference = list(set(torch_outputs) - set(accelerated_outputs))
 print(len(difference))
 
+
+input("start")
 for a, b in zip(torch_outputs, accelerated_outputs):
     print("#" * 10)
     print(a)
     print("-" * 10)
     print(b)
+
+print(len(difference))
+
 # print(accelerated_output)
 #
 # ner_results = ds_clf(example, max_new_tokens=64, do_sample=True)
