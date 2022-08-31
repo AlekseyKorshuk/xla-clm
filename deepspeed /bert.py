@@ -16,7 +16,6 @@ model_id = "EleutherAI/gpt-j-6B"
 # load model and tokenizer
 tokenizer = AutoTokenizer.from_pretrained(model_id)
 model = AutoModelForCausalLM.from_pretrained(model_id)
-torch_pipe = pipeline("text-generation", model=model, tokenizer=tokenizer, device=0)
 
 # Test pipeline
 GENERATION_KWARGS = {
@@ -33,11 +32,6 @@ GENERATION_KWARGS = {
 
 INPUT_EXAMPLES = dataset["train"]["text"][:10]
 
-print("Pytorch")
-torch_outputs = []
-for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Pytorch"):
-    torch_output = torch_pipe(example, **GENERATION_KWARGS)[0]["generated_text"][len(example):]
-    torch_outputs.append(torch_output)
 # print(torch_output)
 # init deepspeed inference engine
 ds_model = deepspeed.init_inference(
@@ -57,6 +51,13 @@ accelerated_outputs = []
 for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Accelerated"):
     accelerated_output = ds_clf(example, **GENERATION_KWARGS)[0]["generated_text"][len(example):]
     accelerated_outputs.append(accelerated_output)
+
+torch_pipe = pipeline("text-generation", model=model, tokenizer=tokenizer, device=0)
+print("Pytorch")
+torch_outputs = []
+for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Pytorch"):
+    torch_output = torch_pipe(example, **GENERATION_KWARGS)[0]["generated_text"][len(example):]
+    torch_outputs.append(torch_output)
 
 difference = list(set(torch_outputs) - set(accelerated_outputs))
 print(len(difference))
