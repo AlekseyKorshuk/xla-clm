@@ -26,5 +26,5 @@ ds_clf = pipeline("text-generation", model=ds_model, tokenizer=tokenizer, device
 
 # Test pipeline
 example = "My name is Wolfgang and I live in Berlin"
-ner_results = ds_clf(example)
+ner_results = ds_clf(example, max_new_tokens=64)
 print(ner_results)
