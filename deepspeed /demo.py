@@ -3,6 +3,7 @@ from transformers import AutoTokenizer, AutoModelForTokenClassification, pipelin
 from transformers import pipeline
 from deepspeed.module_inject import HFBertLayerPolicy
 import deepspeed
+import tqdm
 
 # Model Repository on huggingface.co
 model_id = "gpt2"
@@ -26,5 +27,6 @@ ds_clf = pipeline("text-generation", model=ds_model, tokenizer=tokenizer, device
 
 # Test pipeline
 example = "My name is Wolfgang and I live in Berlin"
-ner_results = ds_clf(example)
+for _ in tqdm.trange(10):
+    ner_results = ds_clf(example)
 print(ner_results)
