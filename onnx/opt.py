@@ -39,14 +39,14 @@ print(results)
 # inputs = tokenizer("Using DistilBERT with ONNX Runtime!", return_tensors="pt")
 
 print("ONNX")
-for _ in tqdm.trange(10):
-    for _ in tqdm.trange(100):
+for _ in tqdm.trange(1):
+    for _ in tqdm.trange(10):
         cls_pipeline("I love burritos!")
         # outputs = session.run(output_names=["last_hidden_state"], input_feed=dict(inputs))
 
 print("Pytorch")
 model = AutoModelForCausalLM.from_pretrained(model_checkpoint).to(0)
 cls_pipeline = pipeline("text-generation", model=model, tokenizer=tokenizer, device=0)
-for _ in tqdm.trange(10):
-    for _ in tqdm.trange(100):
+for _ in tqdm.trange(1):
+    for _ in tqdm.trange(10):
         cls_pipeline("I love burritos!")
