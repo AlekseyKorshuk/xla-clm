@@ -21,5 +21,6 @@ generator.model = deepspeed.init_inference(generator.model,
                                            replace_with_kernel_inject=True)
 
 for example in INPUT_EXAMPLES:
+    print("#"*100)
     string = generator(example, do_sample=False, max_new_tokens=50)[0]["generated_text"] #[len(example):]
     print(string)
