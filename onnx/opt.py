@@ -2,7 +2,7 @@ import os
 
 import tqdm
 from optimum.onnxruntime import ORTModelForSequenceClassification, ORTModelForCausalLM
-from transformers import AutoTokenizer, pipeline
+from transformers import AutoTokenizer, pipeline, AutoModelForCausalLM
 
 model_checkpoint = "gpt2"
 save_directory = "tmp/onnx/"
@@ -30,3 +30,10 @@ for _ in tqdm.trange(10):
     for _ in tqdm.trange(10):
         model(**inputs)
         # outputs = session.run(output_names=["last_hidden_state"], input_feed=dict(inputs))
+
+print("Pytorch")
+model = AutoModelForCausalLM.from_pretrained("gpt2").to(0)
+inputs = tokenizer("Using DistilBERT with ONNX Runtime!", return_tensors="pt").to(0)
+for _ in tqdm.trange(10):
+    for _ in tqdm.trange(10):
+        outputs = model(**inputs)
