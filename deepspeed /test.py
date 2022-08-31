@@ -20,7 +20,21 @@ generator.model = deepspeed.init_inference(generator.model,
                                            replace_method='auto',
                                            replace_with_kernel_inject=True)
 
+GENERATION_KWARGS = {
+    "max_new_tokens": 64,
+    # "min_new_tokens": 8,
+    'eos_token_id': 198,
+    'do_sample': True,
+    'pad_token_id': 198,
+    'temperature': 0.72,
+    'top_k': 0,
+    'top_p': 0.725,
+    'repetition_penalty': 1.13,
+}
+
 for example in INPUT_EXAMPLES:
     print("#"*100)
-    string = generator(example, do_sample=False, max_new_tokens=50)[0]["generated_text"] #[len(example):]
+    string = generator(example, **GENERATION_KWARGS)[0]["generated_text"] #[len(example):]
     print(string)
+    print("-" * 100)
+    print(string[len(example):])
