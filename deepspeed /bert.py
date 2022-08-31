@@ -31,7 +31,7 @@ GENERATION_KWARGS = {
     # 'repetition_penalty': 1.13,
 }
 
-INPUT_EXAMPLES = dataset["train"]["text"][:50]
+INPUT_EXAMPLES = dataset["train"]["text"][:10]
 
 print("Pytorch")
 torch_outputs = []
@@ -45,7 +45,7 @@ ds_model = deepspeed.init_inference(
     mp_size=1,  # Number of GPU
     dtype=torch.float32,  # dtype of the weights (fp16)
     # injection_policy={"BertLayer" : HFBertLayerPolicy}, # replace BertLayer with DS HFBertLayerPolicy
-    replace_method="auto",  # Lets DS autmatically identify the layer to replace
+    # replace_method="auto",  # Lets DS autmatically identify the layer to replace
     # replace_with_kernel_inject=True,  # replace the model with the kernel injector
 )
 
