@@ -32,8 +32,8 @@ GENERATION_KWARGS = {
 INPUT_EXAMPLES = dataset["train"]["text"][:100]
 
 print("Pytorch")
-for _ in tqdm.tqdm(INPUT_EXAMPLES):
-    torch_output = torch_pipe(example1, **GENERATION_KWARGS)
+for example in tqdm.tqdm(INPUT_EXAMPLES):
+    torch_output = torch_pipe(example, **GENERATION_KWARGS)
 print(torch_output)
 # init deepspeed inference engine
 ds_model = deepspeed.init_inference(
@@ -49,8 +49,8 @@ ds_model = deepspeed.init_inference(
 ds_clf = pipeline("text-generation", model=ds_model, tokenizer=tokenizer, device=0)
 
 print("Accelerated")
-for _ in tqdm.tqdm(INPUT_EXAMPLES):
-    accelerated_output = ds_clf(example1, **GENERATION_KWARGS)
+for example in tqdm.tqdm(INPUT_EXAMPLES):
+    accelerated_output = ds_clf(example, **GENERATION_KWARGS)
 print(accelerated_output)
 #
 # ner_results = ds_clf(example, max_new_tokens=64, do_sample=True)
