@@ -61,6 +61,12 @@ for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Accelerated"):
 
 difference = list(set(torch_outputs) - set(accelerated_outputs))
 print(len(difference))
+
+for a, b in zip(torch_outputs, accelerated_outputs):
+    print("#"*10)
+    print(a)
+    print("-"*10)
+    print(b)
 # print(accelerated_output)
 #
 # ner_results = ds_clf(example, max_new_tokens=64, do_sample=True)
