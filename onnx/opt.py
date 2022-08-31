@@ -23,7 +23,7 @@ cls_pipeline = pipeline("text-generation", model=model, tokenizer=tokenizer)
 results = cls_pipeline("I love burritos!")
 print(results)
 
-inputs = tokenizer("Using DistilBERT with ONNX Runtime!", return_tensors="np")
+inputs = tokenizer("Using DistilBERT with ONNX Runtime!", return_tensors="pt")
 
 print("ONNX")
 for _ in tqdm.trange(10):
