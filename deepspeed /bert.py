@@ -9,6 +9,7 @@ from datasets import load_dataset
 dataset = load_dataset("ChaiML/user_model_inputs")
 # Model Repository on huggingface.co
 model_id = "hakurei/litv2-6B-rev2"
+model_id = "gpt2"
 
 # load model and tokenizer
 tokenizer = AutoTokenizer.from_pretrained(model_id)
@@ -22,7 +23,7 @@ example1 = "ear's Fright and tried to kill the night guard, who is Michael, Henr
 GENERATION_KWARGS = {
     "max_new_tokens": 32,
     'eos_token_id': 198,
-    'do_sample': True,
+    'do_sample': False,
     'temperature': 0.72,
     'top_k': 0,
     'top_p': 0.725,
@@ -32,9 +33,11 @@ GENERATION_KWARGS = {
 INPUT_EXAMPLES = dataset["train"]["text"][:100]
 
 print("Pytorch")
+torch_outputs = []
 for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Pytorch"):
-    torch_output = torch_pipe(example, **GENERATION_KWARGS)
-print(torch_output)
+    torch_output = torch_pipe(example, **GENERATION_KWARGS)[0]["generated_text"]
+    torch_outputs.append(torch_output)
+# print(torch_output)
 # init deepspeed inference engine
 ds_model = deepspeed.init_inference(
     model=model,  # Transformers models
@@ -49,9 +52,14 @@ ds_model = deepspeed.init_inference(
 ds_clf = pipeline("text-generation", model=ds_model, tokenizer=tokenizer, device=0)
 
 print("Accelerated")
+accelerated_outputs = []
 for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Accelerated"):
     accelerated_output = ds_clf(example, **GENERATION_KWARGS)
-print(accelerated_output)
+    accelerated_outputs.append(accelerated_output)
+
+difference = list(set(torch_outputs) - set(accelerated_outputs))
+print(len(difference))
+# print(accelerated_output)
 #
 # ner_results = ds_clf(example, max_new_tokens=64, do_sample=True)
 # print(ner_results)
