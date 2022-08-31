@@ -38,6 +38,6 @@ ds_model = deepspeed.init_inference(
 ds_clf = pipeline("text-generation", model=ds_model, tokenizer=tokenizer, device=0)
 
 # Test pipeline
-for _ in tqdm.trange(10):
+for _ in tqdm.trange(1):
     ner_results = ds_clf(input_text, **GENERATION_KWARGS)
     print(ner_results)
