@@ -22,12 +22,12 @@ torch_pipe = pipeline("text-generation", model=model, tokenizer=tokenizer, devic
 GENERATION_KWARGS = {
     "max_new_tokens": 32,
     'eos_token_id': 198,
-    'do_sample': False,
-    '`pad_token_id': 198,
-    # 'temperature': 0.72,
-    # 'top_k': 0,
-    # 'top_p': 0.725,
-    # 'repetition_penalty': 1.13,
+    'do_sample': True,
+    'pad_token_id': 198,
+    'temperature': 0.72,
+    'top_k': 0,
+    'top_p': 0.725,
+    'repetition_penalty': 1.13,
 }
 
 INPUT_EXAMPLES = dataset["train"]["text"][:10]
@@ -35,7 +35,7 @@ INPUT_EXAMPLES = dataset["train"]["text"][:10]
 print("Pytorch")
 torch_outputs = []
 for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Pytorch"):
-    torch_output = torch_pipe(example, **GENERATION_KWARGS)[0]["generated_text"]
+    torch_output = torch_pipe(example, **GENERATION_KWARGS)[0]["generated_text"][len(example):]
     torch_outputs.append(torch_output)
 # print(torch_output)
 # init deepspeed inference engine
@@ -54,7 +54,7 @@ ds_clf = pipeline("text-generation", model=ds_model, tokenizer=tokenizer, device
 print("Accelerated")
 accelerated_outputs = []
 for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Accelerated"):
-    accelerated_output = ds_clf(example, **GENERATION_KWARGS)[0]["generated_text"]
+    accelerated_output = ds_clf(example, **GENERATION_KWARGS)[0]["generated_text"][len(example):]
     accelerated_outputs.append(accelerated_output)
 
 difference = list(set(torch_outputs) - set(accelerated_outputs))
