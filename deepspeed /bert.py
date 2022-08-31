@@ -11,7 +11,7 @@ warnings.filterwarnings("ignore")
 dataset = load_dataset("ChaiML/user_model_inputs")
 # Model Repository on huggingface.co
 model_id = "hakurei/litv2-6B-rev2"
-model_id = "gpt2"
+# model_id = "gpt2"
 
 # load model and tokenizer
 tokenizer = AutoTokenizer.from_pretrained(model_id)
