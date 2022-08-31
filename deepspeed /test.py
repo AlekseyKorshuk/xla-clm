@@ -37,4 +37,5 @@ for example in INPUT_EXAMPLES:
     string = generator(example, **GENERATION_KWARGS)[0]["generated_text"] #[len(example):]
     print(string)
     print("-" * 100)
+    print(f"Input size: {len(generator.tokenizer(example).input_ids)}")
     print(string[len(example):])
