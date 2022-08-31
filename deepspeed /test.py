@@ -3,6 +3,12 @@ import os
 import deepspeed
 import torch
 from transformers import pipeline
+from datasets import load_dataset
+
+dataset = load_dataset("ChaiML/user_model_inputs")
+
+INPUT_EXAMPLES = dataset["train"]["text"][:10]
+
 
 local_rank = int(os.getenv('LOCAL_RANK', '0'))
 world_size = int(os.getenv('WORLD_SIZE', '1'))
@@ -15,5 +21,6 @@ generator.model = deepspeed.init_inference(generator.model,
                                            replace_method='auto',
                                            replace_with_kernel_inject=True)
 
-string = generator("DeepSpeed is", do_sample=False, min_length=50)
-print(string)
+for example in INPUT_EXAMPLES:
+    string = generator(example, do_sample=False, min_length=50)
+    print(string)
