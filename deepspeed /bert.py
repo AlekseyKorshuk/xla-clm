@@ -1,15 +1,15 @@
 import torch
-from transformers import AutoTokenizer, AutoModelForTokenClassification, pipeline
+from transformers import AutoTokenizer, AutoModelForTokenClassification, pipeline, AutoModelForCausalLM
 from transformers import pipeline
 from deepspeed.module_inject import HFBertLayerPolicy
 import deepspeed
 
 # Model Repository on huggingface.co
-model_id = "dslim/bert-large-NER"
+model_id = "gpt2"
 
 # load model and tokenizer
 tokenizer = AutoTokenizer.from_pretrained(model_id)
-model = AutoModelForTokenClassification.from_pretrained(model_id)
+model = AutoModelForCausalLM.from_pretrained(model_id)
 
 # init deepspeed inference engine
 ds_model = deepspeed.init_inference(
@@ -22,7 +22,7 @@ ds_model = deepspeed.init_inference(
 )
 
 # create acclerated pipeline
-ds_clf = pipeline("token-classification", model=ds_model, tokenizer=tokenizer, device=0)
+ds_clf = pipeline("text-generation", model=ds_model, tokenizer=tokenizer, device=0)
 
 # Test pipeline
 example = "My name is Wolfgang and I live in Berlin"
