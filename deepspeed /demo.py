@@ -42,5 +42,5 @@ ds_clf = pipeline("text-generation", model=ds_model, tokenizer=tokenizer, device
 
 # Test pipeline
 for _ in tqdm.trange(1):
-    ner_results = ds_clf(input_text, **GENERATION_KWARGS)
+    ner_results = ds_clf("test", **GENERATION_KWARGS)
     print(ner_results)
