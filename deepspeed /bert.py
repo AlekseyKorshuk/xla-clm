@@ -39,7 +39,7 @@ GENERATION_KWARGS = {
 }
 ner_results = ds_clf(example, max_new_tokens=64, do_sample=True)
 print(ner_results)
-inputs = tokenizer(input_text, return_tensors="pt").to(0)
+inputs = tokenizer("a"*3000, return_tensors="pt").to(0)
 ds_clf.model(**inputs)
 import pdb; pdb.set_trace()
 
