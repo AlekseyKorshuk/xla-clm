@@ -36,8 +36,10 @@ torch_pipe = pipeline("text-generation", model=model, tokenizer=tokenizer, devic
 print("Pytorch")
 torch_outputs = []
 for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Pytorch"):
-    torch_output = torch_pipe(example, **GENERATION_KWARGS)[0]["generated_text"][len(example):]
-    torch_outputs.append(torch_output)
+    inputs = torch_pipe.tokenizer(example, return_tensors='pt').to(0)
+    result = torch_pipe.model.generate(**inputs, **GENERATION_KWARGS)
+    # torch_output = torch_pipe(example, **GENERATION_KWARGS)[0]["generated_text"][len(example):]
+    # torch_outputs.append(torch_output)
 # print(torch_output)
 # init deepspeed inference engine
 ds_model = deepspeed.init_inference(
@@ -54,8 +56,10 @@ ds_clf = pipeline("text-generation", model=ds_model, tokenizer=tokenizer, device
 print("Accelerated")
 accelerated_outputs = []
 for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Accelerated"):
-    accelerated_output = ds_clf(example, **GENERATION_KWARGS)[0]["generated_text"][len(example):]
-    accelerated_outputs.append(accelerated_output)
+    inputs = ds_clf.tokenizer(example, return_tensors='pt').to(0)
+    result = ds_clf.model.generate(**inputs, **GENERATION_KWARGS)
+    # accelerated_output = ds_clf(example, **GENERATION_KWARGS)[0]["generated_text"][len(example):]
+    # accelerated_outputs.append(accelerated_output)
 
 difference = list(set(torch_outputs) - set(accelerated_outputs))
 print(len(difference))
