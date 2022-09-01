@@ -11,7 +11,7 @@ warnings.filterwarnings("ignore")
 dataset = load_dataset("ChaiML/user_model_inputs")
 # Model Repository on huggingface.co
 model_id = "ChaiML/reward_48m_gpt2_target_2"
-tokenizer_id = "gptw"
+tokenizer_id = "gpt2"
 token = "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"
 # model_id = "gpt2"
 
