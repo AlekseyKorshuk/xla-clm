@@ -32,12 +32,12 @@ GENERATION_KWARGS = {
 
 INPUT_EXAMPLES = dataset["train"]["text"][:100]
 
-torch_pipe = pipeline("text-generation", model=model, tokenizer=tokenizer, device=0)
+# torch_pipe = pipeline("text-generation", model=model, tokenizer=tokenizer, device=0)
 print("Pytorch")
 torch_outputs = []
 for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Pytorch"):
-    inputs = torch_pipe.tokenizer(example, return_tensors='pt').to(0)
-    result = torch_pipe.model.generate(**inputs, **GENERATION_KWARGS)
+    inputs = tokenizer(example, return_tensors='pt').to(0)
+    result = model.generate(**inputs, **GENERATION_KWARGS)
     # torch_output = torch_pipe(example, **GENERATION_KWARGS)[0]["generated_text"][len(example):]
     # torch_outputs.append(torch_output)
 # print(torch_output)
@@ -51,13 +51,13 @@ ds_model = deepspeed.init_inference(
 )
 
 # create acclerated pipeline
-ds_clf = pipeline("text-generation", model=ds_model, tokenizer=tokenizer, device=0)
+# ds_clf = pipeline("text-generation", model=ds_model, tokenizer=tokenizer, device=0)
 
 print("Accelerated")
 accelerated_outputs = []
 for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Accelerated"):
-    inputs = ds_clf.tokenizer(example, return_tensors='pt').to(0)
-    result = ds_clf.model.generate(**inputs, **GENERATION_KWARGS)
+    inputs = tokenizer(example, return_tensors='pt').to(0)
+    result = ds_model.generate(**inputs, **GENERATION_KWARGS)
     # accelerated_output = ds_clf(example, **GENERATION_KWARGS)[0]["generated_text"][len(example):]
     # accelerated_outputs.append(accelerated_output)
 
