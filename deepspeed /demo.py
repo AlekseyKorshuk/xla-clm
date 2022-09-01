@@ -32,7 +32,7 @@ ds_model = deepspeed.init_inference(
 # create acclerated pipeline
 pipe = pipeline("text-generation", model=ds_model, tokenizer=tokenizer, device=0)
 
-result = pipe("Chai is")
+result = pipe("Chai Research is")
 print(result)
 
 inputs = pipe.tokenizer("Chai is", return_tensors='pt').to(0)
