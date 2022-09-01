@@ -1,5 +1,5 @@
 import torch
-from transformers import AutoTokenizer, AutoModelForTokenClassification, pipeline, AutoModelForCausalLM
+from transformers import AutoTokenizer, AutoModelForTokenClassification, pipeline, AutoModelForSequenceClassification
 from transformers import pipeline
 from deepspeed.module_inject import HFBertLayerPolicy
 import deepspeed
@@ -17,7 +17,7 @@ token = "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"
 
 # load model and tokenizer
 tokenizer = AutoTokenizer.from_pretrained(tokenizer_id, use_auth_token=token)
-model = AutoModelForCausalLM.from_pretrained(model_id, use_auth_token=token).to(0)
+model = AutoModelForSequenceClassification.from_pretrained(model_id, use_auth_token=token).to(0)
 
 INPUT_EXAMPLES = dataset["train"]["reward_input"][:100]
 
