@@ -30,13 +30,16 @@ ds_model = deepspeed.init_inference(
 )
 
 # create acclerated pipeline
-# pipe = pipeline("text-generation", model=ds_model, tokenizer=tokenizer, device=0)
+pipe = pipeline("text-generation", model=ds_model, tokenizer=tokenizer, device=0)
 
-# result = pipe("Chai Research is")
+
+print("started")
+while True:
+    result = pipe(["Chai Research is", "Chai Research is", "Chai Research is"])
+    print(result)
+
+# inputs = tokenizer.("Chai is", return_tensors='pt').to(0)
+# result = ds_model.generate(**inputs, **GENERATION_KWARGS)
 # print(result)
-
-inputs = tokenizer("Chai is", return_tensors='pt').to(0)
-result = ds_model.generate(**inputs, **GENERATION_KWARGS)
-print(result)
 
 input()
