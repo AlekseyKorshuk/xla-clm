@@ -35,6 +35,6 @@ pipe = pipeline("text-generation", model=ds_model, tokenizer=tokenizer, device=0
 result = pipe("Chai is")
 print(result)
 
-inputs = pipe.tokenizer("Chai is", return_tensors='pt')
+inputs = pipe.tokenizer("Chai is", return_tensors='pt').to(0)
 result = pipe.model.generate(**inputs, **GENERATION_KWARGS)
 print(result)
