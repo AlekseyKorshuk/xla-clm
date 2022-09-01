@@ -3,7 +3,7 @@ from transformers import AutoTokenizer, AutoModelForTokenClassification, pipelin
 from transformers import pipeline
 import deepspeed
 
-model_id = "gpt2"
+model_id = "hakurei/litv2-6B-rev2"
 
 # load model and tokenizer
 tokenizer = AutoTokenizer.from_pretrained(model_id)
