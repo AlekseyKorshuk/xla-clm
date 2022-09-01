@@ -19,7 +19,7 @@ token = "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"
 tokenizer = AutoTokenizer.from_pretrained(tokenizer_id, use_auth_token=token)
 model = AutoModelForSequenceClassification.from_pretrained(model_id, use_auth_token=token).to(0)
 
-INPUT_EXAMPLES = dataset["train"]["reward_input"][:100]
+INPUT_EXAMPLES = dataset["train"]["reward_input"][:100000]
 
 torch_pipe = pipeline("text-classification", model=model, tokenizer=tokenizer, device=0)
 
@@ -28,8 +28,7 @@ torch_outputs = []
 for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Pytorch"):
     # inputs = tokenizer(example, return_tensors='pt').to(0)
     # result = model.generate(**inputs, **GENERATION_KWARGS)
-    torch_output = torch_pipe(example)
-    print(torch_output)
+    torch_output = torch_pipe(example)[0]['label']
     torch_outputs.append(torch_output)
 # print(torch_output)
 # init deepspeed inference engine
@@ -47,8 +46,8 @@ ds_clf = pipeline("text-classification", model=ds_model, tokenizer=tokenizer, de
 print("Accelerated")
 accelerated_outputs = []
 for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Accelerated"):
-    accelerated_output = ds_clf(example)
+    accelerated_output = ds_clf(example)[0]['label']
     accelerated_outputs.append(accelerated_output)
 
-difference = list(set(torch_outputs) - set(accelerated_outputs))
-print(len(difference))
+
+
