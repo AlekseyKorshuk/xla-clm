@@ -28,9 +28,9 @@ torch_outputs = []
 for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Pytorch"):
     # inputs = tokenizer(example, return_tensors='pt').to(0)
     # result = model.generate(**inputs, **GENERATION_KWARGS)
-    torch_output = torch_pipe(example)[0]
+    torch_output = torch_pipe(example)
     print(torch_output)
-    # torch_outputs.append(torch_output)
+    torch_outputs.append(torch_output)
 # print(torch_output)
 # init deepspeed inference engine
 ds_model = deepspeed.init_inference(
@@ -47,8 +47,8 @@ ds_clf = pipeline("text-generation", model=ds_model, tokenizer=tokenizer, device
 print("Accelerated")
 accelerated_outputs = []
 for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Accelerated"):
-    accelerated_output = ds_clf(example)[0]
-    # accelerated_outputs.append(accelerated_output)
+    accelerated_output = ds_clf(example)
+    accelerated_outputs.append(accelerated_output)
 
 difference = list(set(torch_outputs) - set(accelerated_outputs))
 print(len(difference))
