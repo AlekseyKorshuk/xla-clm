@@ -11,7 +11,7 @@ from evaluate import evaluator
 from transformers import AutoModelForSequenceClassification, pipeline
 
 warnings.filterwarnings("ignore")
-data = load_dataset("ChaiML/rm_train_dataset", split="validation").shuffle(seed=42).select(range(1000))
+data = load_dataset("ChaiML/rm_train_dataset", split="validation").shuffle(seed=42)
 # Model Repository on huggingface.co
 model_id = "ChaiML/reward_48m_gpt2_target_2"
 tokenizer_id = "gpt2"
