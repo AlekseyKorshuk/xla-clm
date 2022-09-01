@@ -38,3 +38,5 @@ ds_model = deepspeed.init_inference(
 inputs = tokenizer("Chai is", return_tensors='pt').to(0)
 result = ds_model.generate(**inputs, **GENERATION_KWARGS)
 print(result)
+
+input()
