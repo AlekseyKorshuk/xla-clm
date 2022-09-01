@@ -39,7 +39,7 @@ while True:
     result = ds_model.generate(**inputs, **GENERATION_KWARGS)
     print(result)
 
-inputs = tokenizer(["Chai is", "Chai is", "Chai is"], return_tensors='pt').to(0)
+inputs = tokenizer(["Chai is", "Chai is"], return_tensors='pt').to(0)
 result = ds_model.generate(**inputs, **GENERATION_KWARGS)
 # print(result)
 
