@@ -13,7 +13,7 @@ from transformers import AutoModelForSequenceClassification, pipeline
 warnings.filterwarnings("ignore")
 data = load_dataset("ChaiML/rm_train_dataset", split="validation").shuffle(seed=42)
 # Model Repository on huggingface.co
-model_id = "ChaiML/reward_48m_gpt2_target_2"
+model_id = "ChaiML/gpt2-xl_num_messages_5"
 tokenizer_id = "gpt2"
 token = "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"
 # model_id = "gpt2"
