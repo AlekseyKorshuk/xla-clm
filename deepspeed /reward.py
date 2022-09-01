@@ -20,7 +20,6 @@ token = "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"
 
 task_evaluator = evaluator("text-classification")
 
-
 # load model and tokenizer
 tokenizer = AutoTokenizer.from_pretrained(tokenizer_id, use_auth_token=token)
 model = AutoModelForSequenceClassification.from_pretrained(model_id, use_auth_token=token).to(0)
@@ -29,12 +28,12 @@ torch_pipe = pipeline("text-classification", model=model, tokenizer=tokenizer, d
 
 label_mapping = {"LABEL_0": 0, "LABEL_1": 1}
 print("Pytorch")
-eval_results = task_evaluator.compute(
+torch_eval_results = task_evaluator.compute(
     model_or_pipeline=torch_pipe,
     data=data,
     label_mapping=label_mapping
 )
-print(eval_results)
+print(torch_eval_results)
 
 # init deepspeed inference engine
 ds_model = deepspeed.init_inference(
@@ -48,7 +47,6 @@ ds_model = deepspeed.init_inference(
 # create acclerated pipeline
 ds_clf = pipeline("text-classification", model=ds_model, tokenizer=tokenizer, device=0)
 
-
 print("Accelerated")
 eval_results = task_evaluator.compute(
     model_or_pipeline=ds_clf,
@@ -56,3 +54,6 @@ eval_results = task_evaluator.compute(
     label_mapping=label_mapping
 )
 print(eval_results)
+
+print("Pytorch")
+print(torch_eval_results)
