@@ -3,7 +3,7 @@ from transformers import AutoTokenizer, AutoModelForTokenClassification, pipelin
 from transformers import pipeline
 import deepspeed
 
-model_id = "gpt2"
+model_id = "hakurei/litv2-6B-rev2"
 
 # load model and tokenizer
 tokenizer = AutoTokenizer.from_pretrained(model_id)
@@ -35,7 +35,7 @@ pipe = pipeline("text-generation", model=ds_model, tokenizer=tokenizer, device=0
 
 print("started")
 while True:
-    inputs = tokenizer(["Chai is", "Chai is", "Chai is"], return_tensors='pt').to(0)
+    inputs = tokenizer(["Chai is", "Chai is", "Chai is", "Chai is", "Chai is"], return_tensors='pt').to(0)
     result = ds_model.generate(**inputs, **GENERATION_KWARGS)
     print(result)
 
