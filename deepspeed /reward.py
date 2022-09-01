@@ -42,7 +42,7 @@ ds_model = deepspeed.init_inference(
 )
 
 # create acclerated pipeline
-ds_clf = pipeline("text-generation", model=ds_model, tokenizer=tokenizer, device=0)
+ds_clf = pipeline("text-classification", model=ds_model, tokenizer=tokenizer, device=0)
 
 print("Accelerated")
 accelerated_outputs = []
