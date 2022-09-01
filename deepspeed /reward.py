@@ -19,7 +19,7 @@ token = "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"
 tokenizer = AutoTokenizer.from_pretrained(tokenizer_id, use_auth_token=token)
 model = AutoModelForSequenceClassification.from_pretrained(model_id, use_auth_token=token).to(0)
 
-INPUT_EXAMPLES = dataset["train"]["reward_input"][:100000]
+INPUT_EXAMPLES = dataset["train"]["reward_input"][:10000]
 
 torch_pipe = pipeline("text-classification", model=model, tokenizer=tokenizer, device=0)
 
