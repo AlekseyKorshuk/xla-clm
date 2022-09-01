@@ -27,11 +27,12 @@ model = AutoModelForSequenceClassification.from_pretrained(model_id, use_auth_to
 
 torch_pipe = pipeline("text-classification", model=model, tokenizer=tokenizer, device=0)
 
+label_mapping = {"LABEL_0": 0, "LABEL_1": 1}
 print("Pytorch")
 eval_results = task_evaluator.compute(
     model_or_pipeline=torch_pipe,
     data=data,
-    # label_mapping={"NEGATIVE": 0, "POSITIVE": 1}
+    label_mapping=label_mapping
 )
 print(eval_results)
 
@@ -52,6 +53,6 @@ print("Accelerated")
 eval_results = task_evaluator.compute(
     model_or_pipeline=ds_clf,
     data=data,
-    # label_mapping={"NEGATIVE": 0, "POSITIVE": 1}
+    label_mapping=label_mapping
 )
 print(eval_results)
