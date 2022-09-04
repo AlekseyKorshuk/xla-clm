@@ -33,11 +33,11 @@ GENERATION_KWARGS = {
 INPUT_EXAMPLES = dataset["train"]["text"][:100]
 
 # torch_pipe = pipeline("text-generation", model=model, tokenizer=tokenizer, device=0)
-print("Pytorch")
-torch_outputs = []
-for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Pytorch"):
-    inputs = tokenizer(example, return_tensors='pt').to(0)
-    result = model.generate(**inputs, **GENERATION_KWARGS)
+# print("Pytorch")
+# torch_outputs = []
+# for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Pytorch"):
+#     inputs = tokenizer(example, return_tensors='pt').to(0)
+#     result = model.generate(**inputs, **GENERATION_KWARGS)
     # torch_output = torch_pipe(example, **GENERATION_KWARGS)[0]["generated_text"][len(example):]
     # torch_outputs.append(torch_output)
 # print(torch_output)
