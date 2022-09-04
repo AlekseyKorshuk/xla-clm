@@ -22,7 +22,7 @@ GENERATION_KWARGS = {
     "max_new_tokens": 64,
     # "min_new_tokens": 8,
     'eos_token_id': 198,
-    'do_sample': False,
+    'do_sample': True,
     'pad_token_id': 198,
     'temperature': 0.72,
     'top_k': 0,
@@ -33,11 +33,11 @@ GENERATION_KWARGS = {
 INPUT_EXAMPLES = dataset["train"]["text"][:100]
 
 # torch_pipe = pipeline("text-generation", model=model, tokenizer=tokenizer, device=0)
-# print("Pytorch")
-# torch_outputs = []
-# for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Pytorch"):
-#     inputs = tokenizer(example, return_tensors='pt').to(0)
-#     result = model.generate(**inputs, **GENERATION_KWARGS)
+print("Pytorch")
+torch_outputs = []
+for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Pytorch"):
+    inputs = tokenizer(example, return_tensors='pt').to(0)
+    result = model.generate(**inputs, **GENERATION_KWARGS)
     # torch_output = torch_pipe(example, **GENERATION_KWARGS)[0]["generated_text"][len(example):]
     # torch_outputs.append(torch_output)
 # print(torch_output)
