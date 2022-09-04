@@ -61,5 +61,5 @@ for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Accelerated"):
     # accelerated_output = ds_clf(example, **GENERATION_KWARGS)[0]["generated_text"][len(example):]
     # accelerated_outputs.append(accelerated_output)
 
-difference = list(set(torch_outputs) - set(accelerated_outputs))
-print(len(difference))
+# difference = list(set(torch_outputs) - set(accelerated_outputs))
+# print(len(difference))
