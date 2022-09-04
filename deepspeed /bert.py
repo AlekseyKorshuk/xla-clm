@@ -15,7 +15,7 @@ model_id = "hakurei/litv2-6B-rev2"
 
 # load model and tokenizer
 tokenizer = AutoTokenizer.from_pretrained(model_id)
-model = AutoModelForCausalLM.from_pretrained(model_id).to(0)
+model = AutoModelForCausalLM.from_pretrained(model_id).half().to(0)
 
 # Test pipeline
 GENERATION_KWARGS = {

@@ -49,11 +49,11 @@ spec:
               - key: gpu.nvidia.com/class
                 operator: In
                 values:
-                  - RTX_A4000
+                  - RTX_A5000
       requiredDuringSchedulingIgnoredDuringExecution:
         nodeSelectorTerms:
           - matchExpressions:
               - key: gpu.nvidia.com/class
                 operator: In
                 values:
-                  - RTX_A4000
+                  - RTX_A5000
