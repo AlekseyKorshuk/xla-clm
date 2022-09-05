@@ -17,7 +17,6 @@ stats = {}
 
 # load model and tokenizer
 tokenizer = AutoTokenizer.from_pretrained(model_id)
-model = AutoModelForCausalLM.from_pretrained(model_id).half().to(0)
 
 # Test pipeline
 GENERATION_KWARGS = {
@@ -34,10 +33,14 @@ GENERATION_KWARGS = {
 
 INPUT_EXAMPLES = dataset["train"]["text"][:100]
 
+example = INPUT_EXAMPLES[0]
+model = AutoModelForCausalLM.from_pretrained(model_id).half().to(0)
+
+
 max_batch_size = 1
 for i in range(4):
     try:
-        inputs = tokenizer([INPUT_EXAMPLES[0]] * i, return_tensors='pt').to(0)
+        inputs = tokenizer([example] * i, return_tensors='pt').to(0)
         result = model.generate(**inputs, **GENERATION_KWARGS)
         print(f"Batch size: {i}")
         max_batch_size = i
