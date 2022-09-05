@@ -21,7 +21,7 @@ model = AutoModelForCausalLM.from_pretrained(model_id).half().to(0)
 
 # Test pipeline
 GENERATION_KWARGS = {
-    "max_new_tokens": 64,
+    "max_new_tokens": 32,
     # "min_new_tokens": 8,
     'eos_token_id': 198,
     'do_sample': True,
@@ -32,7 +32,7 @@ GENERATION_KWARGS = {
     'repetition_penalty': 1.13,
 }
 
-INPUT_EXAMPLES = dataset["train"]["text"][:500]
+INPUT_EXAMPLES = dataset["train"]["text"][:100]
 
 # torch_pipe = pipeline("text-generation", model=model, tokenizer=tokenizer, device=0)
 print("Pytorch single batch")
@@ -44,9 +44,12 @@ for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Pytorch batch size 1"):
     # torch_outputs.append(torch_output)
 print("Pytorch batch size 4")
 torch_outputs = []
-for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Pytorch batch size 4"):
-    inputs = tokenizer([example] * 4, return_tensors='pt').to(0)
-    result = model.generate(**inputs, **GENERATION_KWARGS)
+try:
+    for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Pytorch batch size 4"):
+        inputs = tokenizer([example] * 4, return_tensors='pt').to(0)
+        result = model.generate(**inputs, **GENERATION_KWARGS)
+except Exception as ex:
+    print(ex)
 # print(torch_output)
 # init deepspeed inference engine
 ds_model = deepspeed.init_inference(
@@ -67,10 +70,14 @@ for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Accelerated batch size 1"):
     result = ds_model.generate(**inputs, **GENERATION_KWARGS)
 
 print("Accelerated batch size 4")
+
 accelerated_outputs = []
-for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Accelerated batch size 4"):
-    inputs = tokenizer([example] * 4, return_tensors='pt').to(0)
-    result = ds_model.generate(**inputs, **GENERATION_KWARGS)
+try:
+    for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Accelerated batch size 4"):
+        inputs = tokenizer([example] * 4, return_tensors='pt').to(0)
+        result = ds_model.generate(**inputs, **GENERATION_KWARGS)
+except Exception as ex:
+    print(ex)
 # accelerated_output = ds_clf(example, **GENERATION_KWARGS)[0]["generated_text"][len(example):]
 # accelerated_outputs.append(accelerated_output)
 

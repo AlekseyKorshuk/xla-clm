@@ -3,7 +3,7 @@ kind: Pod
 metadata:
   labels:
     qos.coreweave.cloud/latency: low
-  name: aleksey-2
+  name: aleksey-1
   namespace: tenant-chairesearch-test
 spec:
   imagePullSecrets:
