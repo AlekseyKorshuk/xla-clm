@@ -32,7 +32,7 @@ GENERATION_KWARGS = {
     'repetition_penalty': 1.13,
 }
 
-INPUT_EXAMPLES = dataset["train"]["text"][:100]
+INPUT_EXAMPLES = dataset["train"]["text"][:500]
 
 # torch_pipe = pipeline("text-generation", model=model, tokenizer=tokenizer, device=0)
 print("Pytorch single batch")
