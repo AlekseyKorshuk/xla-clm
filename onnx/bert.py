@@ -37,7 +37,18 @@ GENERATION_KWARGS = {
 INPUT_EXAMPLES = dataset["train"]["text"][:100]
 
 example = INPUT_EXAMPLES[0]
-model = AutoModelForCausalLM.from_pretrained(model_id).half().to(0)
+
+import os
+from optimum.onnxruntime import ORTModelForCausalLM
+from transformers import AutoTokenizer, pipeline
+
+model_checkpoint = "KoboldAI/OPT-6B-nerys-v2"
+save_directory = "onnx/"
+file_name = "model.onnx"
+onnx_path = os.path.join(save_directory, "model.onnx")
+
+# Load a model from transformers and export it through the ONNX format
+model = ORTModelForCausalLM.from_pretrained(save_directory, file_name=file_name).to(0)
 
 max_batch_size = 1
 for i in range(1, 5):
@@ -51,50 +62,18 @@ for i in range(1, 5):
         break
 
 # torch_pipe = pipeline("text-generation", model=model, tokenizer=tokenizer, device=0)
-print("Pytorch single batch")
+print("ONNX single batch")
 torch_outputs = []
-for example in tqdm.tqdm(INPUT_EXAMPLES[:20], desc="Pytorch single batch"):
+for example in tqdm.tqdm(INPUT_EXAMPLES[:20], desc="ONNX single batch"):
     inputs = tokenizer(example, return_tensors='pt').to(0)
     result = model.generate(**inputs, **GENERATION_KWARGS)
     # torch_output = torch_pipe(example, **GENERATION_KWARGS)[0]["generated_text"][len(example):]
     # torch_outputs.append(torch_output)
-print("Pytorch batch size")
+print("ONNX batch size")
 torch_outputs = []
 try:
-    for example in tqdm.tqdm(INPUT_EXAMPLES[:10], desc="Pytorch batch size"):
+    for example in tqdm.tqdm(INPUT_EXAMPLES[:10], desc="ONNX batch size"):
         inputs = tokenizer([example] * max_batch_size, return_tensors='pt').to(0)
         result = model.generate(**inputs, **GENERATION_KWARGS)
 except Exception as ex:
     print(ex)
-# print(torch_output)
-# init deepspeed inference engine
-ds_model = deepspeed.init_inference(
-    model=model,  # Transformers models
-    mp_size=1,  # Number of GPU
-    dtype=torch.float16,  # dtype of the weights (fp16)
-    replace_method="auto",  # Lets DS autmatically identify the layer to replace
-    replace_with_kernel_inject=True,  # replace the model with the kernel injector
-)
-
-# create acclerated pipeline
-# ds_clf = pipeline("text-generation", model=ds_model, tokenizer=tokenizer, device=0)
-
-print("Accelerated single batch")
-accelerated_outputs = []
-for example in tqdm.tqdm(INPUT_EXAMPLES[:20], desc="Accelerated single batch"):
-    inputs = tokenizer(example, return_tensors='pt').to(0)
-    result = ds_model.generate(**inputs, **GENERATION_KWARGS)
-
-print("Accelerated batch size")
-accelerated_outputs = []
-try:
-    for example in tqdm.tqdm(INPUT_EXAMPLES[:10], desc="Accelerated batch size"):
-        inputs = tokenizer([example] * max_batch_size, return_tensors='pt').to(0)
-        result = ds_model.generate(**inputs, **GENERATION_KWARGS)
-except Exception as ex:
-    print(ex)
-# accelerated_output = ds_clf(example, **GENERATION_KWARGS)[0]["generated_text"][len(example):]
-# accelerated_outputs.append(accelerated_output)
-
-# difference = list(set(torch_outputs) - set(accelerated_outputs))
-# print(len(difference))
