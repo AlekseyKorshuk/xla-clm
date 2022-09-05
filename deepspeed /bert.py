@@ -38,7 +38,7 @@ model = AutoModelForCausalLM.from_pretrained(model_id).half().to(0)
 
 
 max_batch_size = 1
-for i in range(4):
+for i in range(1, 5):
     try:
         inputs = tokenizer([example] * i, return_tensors='pt').to(0)
         result = model.generate(**inputs, **GENERATION_KWARGS)
