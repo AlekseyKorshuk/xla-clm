@@ -51,15 +51,15 @@ for i in range(1, 5):
 # torch_pipe = pipeline("text-generation", model=model, tokenizer=tokenizer, device=0)
 print("Pytorch single batch")
 torch_outputs = []
-for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Pytorch batch size 1"):
+for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Pytorch single batch"):
     inputs = tokenizer(example, return_tensors='pt').to(0)
     result = model.generate(**inputs, **GENERATION_KWARGS)
     # torch_output = torch_pipe(example, **GENERATION_KWARGS)[0]["generated_text"][len(example):]
     # torch_outputs.append(torch_output)
-print("Pytorch batch size 4")
+print("Pytorch batch size")
 torch_outputs = []
 try:
-    for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Pytorch batch size 4"):
+    for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Pytorch batch size"):
         inputs = tokenizer([example] * max_batch_size, return_tensors='pt').to(0)
         result = model.generate(**inputs, **GENERATION_KWARGS)
 except Exception as ex:
@@ -77,16 +77,16 @@ ds_model = deepspeed.init_inference(
 # create acclerated pipeline
 # ds_clf = pipeline("text-generation", model=ds_model, tokenizer=tokenizer, device=0)
 
-print("Accelerated single")
+print("Accelerated single batch")
 accelerated_outputs = []
-for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Accelerated batch size 1"):
+for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Accelerated single batch"):
     inputs = tokenizer(example, return_tensors='pt').to(0)
     result = ds_model.generate(**inputs, **GENERATION_KWARGS)
 
-print("Accelerated batch size 4")
+print("Accelerated batch size")
 accelerated_outputs = []
 try:
-    for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Accelerated batch size 4"):
+    for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Accelerated batch size"):
         inputs = tokenizer([example] * max_batch_size, return_tensors='pt').to(0)
         result = ds_model.generate(**inputs, **GENERATION_KWARGS)
 except Exception as ex:
