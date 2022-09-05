@@ -13,6 +13,8 @@ dataset = load_dataset("ChaiML/user_model_inputs")
 model_id = "hakurei/litv2-6B-rev2"
 # model_id = "gpt2"
 
+stats = {}
+
 # load model and tokenizer
 tokenizer = AutoTokenizer.from_pretrained(model_id)
 model = AutoModelForCausalLM.from_pretrained(model_id).half().to(0)
@@ -33,13 +35,18 @@ GENERATION_KWARGS = {
 INPUT_EXAMPLES = dataset["train"]["text"][:100]
 
 # torch_pipe = pipeline("text-generation", model=model, tokenizer=tokenizer, device=0)
-print("Pytorch")
+print("Pytorch single batch")
 torch_outputs = []
-for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Pytorch"):
+for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Pytorch batch size 1"):
     inputs = tokenizer(example, return_tensors='pt').to(0)
     result = model.generate(**inputs, **GENERATION_KWARGS)
     # torch_output = torch_pipe(example, **GENERATION_KWARGS)[0]["generated_text"][len(example):]
     # torch_outputs.append(torch_output)
+print("Pytorch batch size 4")
+torch_outputs = []
+for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Pytorch batch size 4"):
+    inputs = tokenizer([example] * 4, return_tensors='pt').to(0)
+    result = model.generate(**inputs, **GENERATION_KWARGS)
 # print(torch_output)
 # init deepspeed inference engine
 ds_model = deepspeed.init_inference(
@@ -53,13 +60,19 @@ ds_model = deepspeed.init_inference(
 # create acclerated pipeline
 # ds_clf = pipeline("text-generation", model=ds_model, tokenizer=tokenizer, device=0)
 
-print("Accelerated")
+print("Accelerated single")
 accelerated_outputs = []
-for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Accelerated"):
+for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Accelerated batch size 1"):
     inputs = tokenizer(example, return_tensors='pt').to(0)
     result = ds_model.generate(**inputs, **GENERATION_KWARGS)
-    # accelerated_output = ds_clf(example, **GENERATION_KWARGS)[0]["generated_text"][len(example):]
-    # accelerated_outputs.append(accelerated_output)
+
+print("Accelerated batch size 4")
+accelerated_outputs = []
+for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Accelerated batch size 4"):
+    inputs = tokenizer([example] * 4, return_tensors='pt').to(0)
+    result = ds_model.generate(**inputs, **GENERATION_KWARGS)
+# accelerated_output = ds_clf(example, **GENERATION_KWARGS)[0]["generated_text"][len(example):]
+# accelerated_outputs.append(accelerated_output)
 
 # difference = list(set(torch_outputs) - set(accelerated_outputs))
 # print(len(difference))

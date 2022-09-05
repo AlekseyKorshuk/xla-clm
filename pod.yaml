@@ -49,11 +49,11 @@ spec:
               - key: gpu.nvidia.com/class
                 operator: In
                 values:
-                  - RTX_A5000
+                  - Tesla_V100_NVLINK
       requiredDuringSchedulingIgnoredDuringExecution:
         nodeSelectorTerms:
           - matchExpressions:
               - key: gpu.nvidia.com/class
                 operator: In
                 values:
-                  - RTX_A5000
+                  - Tesla_V100_NVLINK
