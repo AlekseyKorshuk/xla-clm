@@ -48,7 +48,7 @@ file_name = "model.onnx"
 onnx_path = os.path.join(save_directory, "model.onnx")
 
 # Load a model from transformers and export it through the ONNX format
-model = ORTModelForCausalLM.from_pretrained(save_directory, file_name=file_name).to(0)
+model = ORTModelForCausalLM.from_pretrained(model_checkpoint, from_transformers=True).to(0)
 
 max_batch_size = 1
 for i in range(1, 5):
