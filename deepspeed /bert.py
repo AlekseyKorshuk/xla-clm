@@ -16,7 +16,10 @@ model_id = "KoboldAI/OPT-6B-nerys-v2"
 stats = {}
 
 # load model and tokenizer
-tokenizer = AutoTokenizer.from_pretrained(model_id)
+try:
+    tokenizer = AutoTokenizer.from_pretrained(model_id, use_fast=True)
+except:
+    tokenizer = AutoTokenizer.from_pretrained(model_id, use_fast=False)
 
 # Test pipeline
 GENERATION_KWARGS = {
@@ -35,7 +38,6 @@ INPUT_EXAMPLES = dataset["train"]["text"][:100]
 
 example = INPUT_EXAMPLES[0]
 model = AutoModelForCausalLM.from_pretrained(model_id).half().to(0)
-
 
 max_batch_size = 1
 for i in range(1, 5):
