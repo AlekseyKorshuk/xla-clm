@@ -1,16 +1,6 @@
-# Stand-alone TF XLA generate example for Decoder-Only Models.
+from onnxmltools.utils.float16_converter import convert_float_to_float16
+from onnxmltools.utils import load_model, save_model
 
-# Note: execution times are deeply dependent on hardware.
-# If you have a machine with a powerful GPU, I highly recommend you to try this example there!
-import time
-# import tensorflow as tf
-from transformers import AutoTokenizer, TFAutoModelForCausalLM, AutoModelForCausalLM
-
-# 1. Load model and tokenizer
-# model_name = "gpt2"  # hakurei/litv2-6B-rev2
-# remember: decoder-only models need left-padding
-tokenizer = AutoTokenizer.from_pretrained('bigscience/bloom', padding_side="left", pad_token="</s>")
-
-print(str(tokenizer.decode([189])))
-
-print(tokenizer("\n").input_ids)
+onnx_model = load_model('model.onnx')
+new_onnx_model = convert_float_to_float16(onnx_model)
+save_model(new_onnx_model, 'new_model.onnx')

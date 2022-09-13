@@ -1,0 +1,8 @@
+
+
+convert_model -m gpt2 \
+    --backend onnx tensorrt \
+    --seq-len 6 512 512 \
+    --batch-size 1 1 1 \
+    --task text-generation \
+    --verbose
