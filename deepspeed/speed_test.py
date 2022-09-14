@@ -39,7 +39,7 @@ model.to("cpu")
 ds_model = deepspeed.init_inference(
     model=model,  # Transformers models
     mp_size=1,  # Number of GPU
-    dtype=torch.float16,  # dtype of the weights (fp16)
+    dtype=torch.int8,  # dtype of the weights (fp16)
     replace_method="auto",  # Lets DS autmatically identify the layer to replace
     replace_with_kernel_inject=True,  # replace the model with the kernel injector
 )
