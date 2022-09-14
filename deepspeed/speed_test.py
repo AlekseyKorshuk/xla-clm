@@ -43,7 +43,7 @@ ds_model = deepspeed.init_inference(
     replace_method="auto",  # Lets DS autmatically identify the layer to replace
     replace_with_kernel_inject=True,  # replace the model with the kernel injector
 )
-
+input("test")
 accelerated_outputs = []
 for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Accelerated single batch"):
     inputs = tokenizer(example, return_tensors='pt').to(0)
