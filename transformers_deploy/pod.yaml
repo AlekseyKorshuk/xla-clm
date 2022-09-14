@@ -3,7 +3,7 @@ kind: Pod
 metadata:
   labels:
     qos.coreweave.cloud/latency: low
-  name: aleksey-1
+  name: aleksey-2
   namespace: tenant-chairesearch-test
 spec:
   imagePullSecrets:
@@ -59,11 +59,11 @@ spec:
               - key: gpu.nvidia.com/class
                 operator: In
                 values:
-                  - RTX_A6000
+                  - A100_PCIE_80GB
       requiredDuringSchedulingIgnoredDuringExecution:
         nodeSelectorTerms:
           - matchExpressions:
               - key: gpu.nvidia.com/class
                 operator: In
                 values:
-                  - RTX_A6000
+                  - A100_PCIE_80GB
