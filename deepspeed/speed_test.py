@@ -12,7 +12,7 @@ dataset = load_dataset("ChaiML/user_model_inputs")
 model_id = "gpt2"
 
 NUM_SAMPLES = 3
-VERBOSE = False
+VERBOSE = True
 BATCH_SIZE = 2
 
 GENERATION_KWARGS = {
