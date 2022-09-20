@@ -35,9 +35,8 @@ torch_outputs = []
 for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Pytorch single batch"):
     inputs = tokenizer(example, return_tensors='pt').to(0)
     result = model.generate(**inputs, **GENERATION_KWARGS)
-    print(result)
     text_output = tokenizer.decode(result[0])
-    print(text_output)
+    result = text_output[len(example):]
     torch_outputs.append(result)
 
 model.to("cpu")
@@ -53,8 +52,12 @@ accelerated_outputs = []
 for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Accelerated single batch"):
     inputs = tokenizer(example, return_tensors='pt').to(0)
     result = ds_model.generate(**inputs, **GENERATION_KWARGS)
+    text_output = tokenizer.decode(result[0])
+    result = text_output[len(example):]
     accelerated_outputs.append(result)
 
-
 for torch_output, accelerated_output in zip(torch_outputs, accelerated_outputs):
-    print()
+    print("#" * 100)
+    print(torch_output)
+    print("-" * 100)
+    print(accelerated_output)
