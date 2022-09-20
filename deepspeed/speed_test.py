@@ -13,7 +13,7 @@ model_id = "hakurei/litv2-6B-rev2"
 
 NUM_SAMPLES = 50
 VERBOSE = False
-BATCH_SIZE = 2
+BATCH_SIZE = 4
 
 GENERATION_KWARGS = {
     "max_new_tokens": 32,
@@ -55,7 +55,7 @@ def call_model(model, input_text, batch_size, desc="", verbose=False):
 
 
 torch_outputs = []
-for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Pytorch single batch"):
+for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Pytorch"):
     if VERBOSE:
         print("#" * 10, "INPUT", "#" * 10)
         print(example)
@@ -81,7 +81,7 @@ ds_model = deepspeed.init_inference(
 )
 
 accelerated_outputs = []
-for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Accelerated single batch"):
+for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Accelerated"):
     if VERBOSE:
         print("#" * 10, "INPUT", "#" * 10)
         print(example)
