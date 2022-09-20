@@ -37,10 +37,12 @@ except:
 
 torch_outputs = []
 for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Pytorch single batch"):
+    print(example)
     inputs = tokenizer(example, return_tensors='pt').to(0)
     result = model.generate(**inputs, **GENERATION_KWARGS)
     text_output = tokenizer.decode(result[0])
     result = text_output[len(example):]
+    print("-----")
     print(result)
     inputs = tokenizer([example] * 4, return_tensors='pt').to(0)
     result = model.generate(**inputs, **GENERATION_KWARGS)
@@ -64,10 +66,12 @@ ds_model = deepspeed.init_inference(
 
 accelerated_outputs = []
 for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Accelerated single batch"):
+    print(example)
     inputs = tokenizer(example, return_tensors='pt').to(0)
     result = ds_model.generate(**inputs, **GENERATION_KWARGS)
     text_output = tokenizer.decode(result[0])
     result = text_output[len(example):]
+    print("-----")
     print(result)
     inputs = tokenizer([example] * 4, return_tensors='pt').to(0)
     result = ds_model.generate(**inputs, **GENERATION_KWARGS)
