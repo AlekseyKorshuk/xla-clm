@@ -8,8 +8,8 @@ from datasets import load_dataset
 import warnings
 
 dataset = load_dataset("ChaiML/user_model_inputs")
-# model_id = "hakurei/litv2-6B-rev2"
-model_id = "gpt2"
+model_id = "hakurei/litv2-6B-rev2"
+# model_id = "gpt2"
 
 NUM_SAMPLES = 100
 VERBOSE = False
@@ -39,11 +39,11 @@ except:
 
 def prepare_input(example):
     tokens = tokenizer(example, return_tensors='pt').input_ids[0]
-    print(len(tokens))
+    # print(len(tokens))
     tokens = tokens[
              -(MAX_TOKENS - GENERATION_KWARGS["max_new_tokens"]):
              ]
-    print(len(tokens))
+    # print(len(tokens))
     return tokenizer.decode(
         tokens
     )
