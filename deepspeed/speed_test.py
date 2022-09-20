@@ -27,7 +27,7 @@ model = AutoModelForCausalLM.from_pretrained(model_id).half().eval().to(0)
 
 INPUT_EXAMPLES = dataset["train"]["text"][:NUM_SAMPLES]
 
-INPUT_EXAMPLES = [example[:100] for example in INPUT_EXAMPLES]
+INPUT_EXAMPLES = [example[-500:] for example in INPUT_EXAMPLES]
 
 # load model and tokenizer
 try:
@@ -35,22 +35,41 @@ try:
 except:
     tokenizer = AutoTokenizer.from_pretrained(model_id, use_fast=False)
 
+
+def call_model(model, input_text, batch_size, desc="", verbose=False):
+    if verbose:
+        print(desc)
+        print(f"Batch size: {batch_size}")
+    inputs = tokenizer([input_text] * batch_size, return_tensors='pt').to(0)
+    results = model.generate(**inputs, **GENERATION_KWARGS)
+    for i, result in enumerate(results):
+        text_output = tokenizer.decode(result)
+        result = text_output[len(input_text):]
+        if verbose:
+            print(f"#{i}: {result}")
+    return result
+
+
 torch_outputs = []
 for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Pytorch single batch"):
+    print("#" * 10, "INPUT", "#" * 10)
     print(example)
-    inputs = tokenizer(example, return_tensors='pt').to(0)
-    result = model.generate(**inputs, **GENERATION_KWARGS)
-    text_output = tokenizer.decode(result[0])
-    result = text_output[len(example):]
-    print("-----")
-    print(result)
-    inputs = tokenizer([example] * 4, return_tensors='pt').to(0)
-    result = model.generate(**inputs, **GENERATION_KWARGS)
-    text_output = tokenizer.decode(result[0])
-    result = text_output[len(example):]
-    print(result)
-    input("wait")
+    print("-" * 30)
 
+    result = call_model(
+        model=model,
+        input_text=example,
+        batch_size=1,
+        desc="Deepspeed",
+        verbose=True
+    )
+    _ = call_model(
+        model=model,
+        input_text=example,
+        batch_size=4,
+        desc="Deepspeed",
+        verbose=True
+    )
     # text_output = tokenizer.decode(result[0])
     # result = text_output[len(example):]
     torch_outputs.append(result)
@@ -66,19 +85,24 @@ ds_model = deepspeed.init_inference(
 
 accelerated_outputs = []
 for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Accelerated single batch"):
+    print("#" * 10, "INPUT", "#" * 10)
     print(example)
-    inputs = tokenizer(example, return_tensors='pt').to(0)
-    result = ds_model.generate(**inputs, **GENERATION_KWARGS)
-    text_output = tokenizer.decode(result[0])
-    result = text_output[len(example):]
-    print("-----")
-    print(result)
-    inputs = tokenizer([example] * 4, return_tensors='pt').to(0)
-    result = ds_model.generate(**inputs, **GENERATION_KWARGS)
-    text_output = tokenizer.decode(result[0])
-    result = text_output[len(example):]
-    print(result)
-    input("wait")
+    print("-" * 30)
+
+    result = call_model(
+        model=ds_model,
+        input_text=example,
+        batch_size=1,
+        desc="Deepspeed",
+        verbose=True
+    )
+    _ = call_model(
+        model=ds_model,
+        input_text=example,
+        batch_size=4,
+        desc="Deepspeed",
+        verbose=True
+    )
 
     # text_output = tokenizer.decode(result[0])
     # result = text_output[len(example):]
