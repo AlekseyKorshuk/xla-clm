@@ -9,7 +9,9 @@ import warnings
 
 dataset = load_dataset("ChaiML/user_model_inputs")
 model_id = "hakurei/litv2-6B-rev2"
-# model_id = "gpt2"
+model_id = "gpt2"
+
+NUM_SAMPLES = 10
 
 GENERATION_KWARGS = {
     "max_new_tokens": 32,
@@ -23,7 +25,7 @@ GENERATION_KWARGS = {
 }
 model = AutoModelForCausalLM.from_pretrained(model_id).half().eval().to(0)
 
-INPUT_EXAMPLES = dataset["train"]["text"][:100]
+INPUT_EXAMPLES = dataset["train"]["text"][:NUM_SAMPLES]
 
 INPUT_EXAMPLES = [example[:100] for example in INPUT_EXAMPLES]
 
@@ -37,6 +39,12 @@ torch_outputs = []
 for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Pytorch single batch"):
     inputs = tokenizer(example, return_tensors='pt').to(0)
     result = model.generate(**inputs, **GENERATION_KWARGS)
+    print(result)
+    inputs = tokenizer([example] * 4, return_tensors='pt').to(0)
+    result = model.generate(**inputs, **GENERATION_KWARGS)
+    print(result)
+    input("wait")
+
     text_output = tokenizer.decode(result[0])
     result = text_output[len(example):]
     torch_outputs.append(result)
