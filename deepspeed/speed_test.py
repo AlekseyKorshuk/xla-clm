@@ -13,7 +13,7 @@ model_id = "hakurei/litv2-6B-rev2"
 
 NUM_SAMPLES = 50
 VERBOSE = False
-BATCH_SIZE = 1
+BATCH_SIZE = 2
 
 GENERATION_KWARGS = {
     "max_new_tokens": 32,
