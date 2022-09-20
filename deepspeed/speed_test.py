@@ -23,7 +23,7 @@ GENERATION_KWARGS = {
 }
 model = AutoModelForCausalLM.from_pretrained(model_id).half().eval().to(0)
 
-INPUT_EXAMPLES = dataset["train"]["text"][:10]
+INPUT_EXAMPLES = dataset["train"]["text"][:100]
 
 INPUT_EXAMPLES = [example[:100] for example in INPUT_EXAMPLES]
 
