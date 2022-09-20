@@ -30,10 +30,14 @@ try:
 except:
     tokenizer = AutoTokenizer.from_pretrained(model_id, use_fast=False)
 
-accelerated_outputs = []
+torch_outputs = []
 for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Pytorch single batch"):
     inputs = tokenizer(example, return_tensors='pt').to(0)
     result = model.generate(**inputs, **GENERATION_KWARGS)
+    print(result)
+    text_output = tokenizer.decode(result)
+    print(text_output)
+    torch_outputs.append(result)
 
 model.to("cpu")
 ds_model = deepspeed.init_inference(
@@ -48,3 +52,8 @@ accelerated_outputs = []
 for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Accelerated single batch"):
     inputs = tokenizer(example, return_tensors='pt').to(0)
     result = ds_model.generate(**inputs, **GENERATION_KWARGS)
+    accelerated_outputs.append(result)
+
+
+for torch_output, accelerated_output in zip(torch_outputs, accelerated_outputs):
+    print()
