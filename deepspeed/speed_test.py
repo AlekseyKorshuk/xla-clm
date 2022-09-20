@@ -9,7 +9,7 @@ import warnings
 
 dataset = load_dataset("ChaiML/user_model_inputs")
 model_id = "hakurei/litv2-6B-rev2"
-model_id = "gpt2"
+# model_id = "gpt2"
 
 GENERATION_KWARGS = {
     "max_new_tokens": 32,
