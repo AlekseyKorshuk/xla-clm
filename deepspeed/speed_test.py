@@ -9,9 +9,11 @@ import warnings
 
 dataset = load_dataset("ChaiML/user_model_inputs")
 model_id = "hakurei/litv2-6B-rev2"
-# model_id = "gpt2"
+model_id = "gpt2"
 
-NUM_SAMPLES = 3
+NUM_SAMPLES = 50
+VERBOSE = False
+BATCH_SIZE = 1
 
 GENERATION_KWARGS = {
     "max_new_tokens": 32,
@@ -54,26 +56,19 @@ def call_model(model, input_text, batch_size, desc="", verbose=False):
 
 torch_outputs = []
 for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Pytorch single batch"):
-    print("#" * 10, "INPUT", "#" * 10)
-    print(example)
-    print("-" * 30)
+    if VERBOSE:
+        print("#" * 10, "INPUT", "#" * 10)
+        print(example)
+        print("-" * 30)
 
     result = call_model(
         model=torch_model,
         input_text=example,
-        batch_size=1,
+        batch_size=BATCH_SIZE,
         desc="Torch",
-        verbose=True
+        verbose=VERBOSE
     )
-    _ = call_model(
-        model=torch_model,
-        input_text=example,
-        batch_size=4,
-        desc="Torch",
-        verbose=True
-    )
-    # text_output = tokenizer.decode(result[0])
-    # result = text_output[len(example):]
+
     torch_outputs.append(result)
 
 torch_model.to("cpu")
@@ -87,27 +82,19 @@ ds_model = deepspeed.init_inference(
 
 accelerated_outputs = []
 for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Accelerated single batch"):
-    print("#" * 10, "INPUT", "#" * 10)
-    print(example)
-    print("-" * 30)
+    if VERBOSE:
+        print("#" * 10, "INPUT", "#" * 10)
+        print(example)
+        print("-" * 30)
 
     result = call_model(
         model=ds_model,
         input_text=example,
-        batch_size=1,
-        desc="Deepspeed",
-        verbose=True
-    )
-    _ = call_model(
-        model=ds_model,
-        input_text=example,
-        batch_size=4,
+        batch_size=BATCH_SIZE,
         desc="Deepspeed",
         verbose=True
     )
 
-    # text_output = tokenizer.decode(result[0])
-    # result = text_output[len(example):]
     accelerated_outputs.append(result)
 
 num_matches = 0
