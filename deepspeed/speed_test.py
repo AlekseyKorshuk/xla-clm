@@ -8,12 +8,12 @@ from datasets import load_dataset
 import warnings
 
 dataset = load_dataset("ChaiML/user_model_inputs")
-model_id = "hakurei/litv2-6B-rev2"
-# model_id = "gpt2"
+# model_id = "hakurei/litv2-6B-rev2"
+model_id = "gpt2"
 
-NUM_SAMPLES = 50
+NUM_SAMPLES = 3
 VERBOSE = False
-BATCH_SIZE = 4
+BATCH_SIZE = 2
 
 GENERATION_KWARGS = {
     "max_new_tokens": 32,
@@ -29,7 +29,7 @@ torch_model = AutoModelForCausalLM.from_pretrained(model_id).half().eval().to(0)
 
 INPUT_EXAMPLES = dataset["train"]["text"][:NUM_SAMPLES]
 
-INPUT_EXAMPLES = [example[-500:] for example in INPUT_EXAMPLES]
+INPUT_EXAMPLES = [example[-2048:] for example in INPUT_EXAMPLES]
 
 # load model and tokenizer
 try:

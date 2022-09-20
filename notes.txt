@@ -6,3 +6,8 @@ pip install git+https://github.com/huggingface/transformers.git
 git clone https://github.com/AlekseyKorshuk/xla-clm && \
     cd xla-clm && \
     pip install accelerate bitsandbytes git+https://github.com/huggingface/transformers.git evaluate sklearn tensorflow
+
+
+pip install git+https://github.com/AlekseyKorshuk/DeepSpeed.git@ds-inference/support-large-token-length --upgrade
+
+pip install transformers[sentencepiece]==4.21.2 accelerate --upgrade -q
