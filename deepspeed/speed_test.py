@@ -14,7 +14,7 @@ model_id = "gpt2"
 NUM_SAMPLES = 1
 VERBOSE = True
 BATCH_SIZE = 2
-MAX_TOKENS = 128
+MAX_TOKENS = 512 - 128
 
 GENERATION_KWARGS = {
     "max_new_tokens": 32,
