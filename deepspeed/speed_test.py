@@ -62,6 +62,12 @@ accelerated_outputs = []
 for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Accelerated single batch"):
     inputs = tokenizer(example, return_tensors='pt').to(0)
     result = ds_model.generate(**inputs, **GENERATION_KWARGS)
+    print(result)
+    inputs = tokenizer([example] * 4, return_tensors='pt').to(0)
+    result = ds_model.generate(**inputs, **GENERATION_KWARGS)
+    print(result)
+    input("wait")
+
     text_output = tokenizer.decode(result[0])
     result = text_output[len(example):]
     accelerated_outputs.append(result)
