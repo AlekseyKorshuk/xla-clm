@@ -9,6 +9,6 @@ git clone https://github.com/AlekseyKorshuk/xla-clm && \
 
 
 pip install git+https://github.com/AlekseyKorshuk/DeepSpeed.git@ds-inference/support-large-token-length --upgrade
-pip install git+https://github.com/microsoft/DeepSpeed.git@cholmes/fix-long-seq-len-inference --upgrade
+pip install git+https://github.com/AlekseyKorshuk/DeepSpeed.git@cholmes/fix-long-seq-len-inference --upgrade
 
 pip install transformers[sentencepiece]==4.21.2 accelerate --upgrade -q
