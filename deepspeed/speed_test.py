@@ -13,7 +13,7 @@ model_id = "gpt2"
 
 NUM_SAMPLES = 3
 VERBOSE = True
-BATCH_SIZE = 2
+BATCH_SIZE = 1
 MAX_TOKENS = 512
 
 GENERATION_KWARGS = {
@@ -36,13 +36,21 @@ try:
 except:
     tokenizer = AutoTokenizer.from_pretrained(model_id, use_fast=False)
 
+
+def prepare_input(example):
+    tokens = tokenizer(example, return_tensors='pt').input_ids[0]
+    print(len(tokens))
+    tokens = tokens[
+             -(MAX_TOKENS - GENERATION_KWARGS["max_new_tokens"]):
+             ]
+    print(len(tokens))
+    return tokenizer.decode(
+        tokens
+    )
+
+
 INPUT_EXAMPLES = [
-    tokenizer.decode(
-        tokenizer(example, return_tensors='pt').input_ids[0][
-            -(MAX_TOKENS - GENERATION_KWARGS["max_new_tokens"]):
-        ]
-    ) for
-    example in INPUT_EXAMPLES
+    prepare_input(example) for example in INPUT_EXAMPLES
 ]
 
 
