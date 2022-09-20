@@ -60,14 +60,14 @@ for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Pytorch single batch"):
         model=model,
         input_text=example,
         batch_size=1,
-        desc="Deepspeed",
+        desc="Torch",
         verbose=True
     )
     _ = call_model(
         model=model,
         input_text=example,
         batch_size=4,
-        desc="Deepspeed",
+        desc="Torch",
         verbose=True
     )
     # text_output = tokenizer.decode(result[0])
