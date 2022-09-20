@@ -38,7 +38,7 @@ except:
 
 INPUT_EXAMPLES = [
     tokenizer.decode(
-        tokenizer(example)[0][
+        tokenizer(example, return_tensors='pt').input_ids[0][
             -(MAX_TOKENS - GENERATION_KWARGS["max_new_tokens"]):
         ]
     ) for
