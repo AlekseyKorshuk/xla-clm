@@ -14,6 +14,7 @@ model_id = "gpt2"
 NUM_SAMPLES = 3
 VERBOSE = True
 BATCH_SIZE = 2
+MAX_TOKENS = 1024
 
 GENERATION_KWARGS = {
     "max_new_tokens": 32,
@@ -29,13 +30,20 @@ torch_model = AutoModelForCausalLM.from_pretrained(model_id).half().eval().to(0)
 
 INPUT_EXAMPLES = dataset["train"]["text"][:NUM_SAMPLES]
 
-INPUT_EXAMPLES = [example[-2048:] for example in INPUT_EXAMPLES]
-
 # load model and tokenizer
 try:
     tokenizer = AutoTokenizer.from_pretrained(model_id, use_fast=True)
 except:
     tokenizer = AutoTokenizer.from_pretrained(model_id, use_fast=False)
+
+INPUT_EXAMPLES = [
+    tokenizer.decode(
+        tokenizer(example)[0][
+            -(MAX_TOKENS - GENERATION_KWARGS["max_new_tokens"]):
+        ]
+    ) for
+    example in INPUT_EXAMPLES
+]
 
 
 def call_model(model, input_text, batch_size, desc="", verbose=False):
