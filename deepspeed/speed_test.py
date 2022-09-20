@@ -39,9 +39,13 @@ torch_outputs = []
 for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Pytorch single batch"):
     inputs = tokenizer(example, return_tensors='pt').to(0)
     result = model.generate(**inputs, **GENERATION_KWARGS)
+    text_output = tokenizer.decode(result[0])
+    result = text_output[len(example):]
     print(result)
     inputs = tokenizer([example] * 4, return_tensors='pt').to(0)
     result = model.generate(**inputs, **GENERATION_KWARGS)
+    text_output = tokenizer.decode(result[0])
+    result = text_output[len(example):]
     print(result)
     input("wait")
 
