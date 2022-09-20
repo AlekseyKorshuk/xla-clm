@@ -23,7 +23,7 @@ GENERATION_KWARGS = {
     'top_p': 0.725,
     'repetition_penalty': 1.13,
 }
-model = AutoModelForCausalLM.from_pretrained(model_id).half().eval().to(0)
+torch_model = AutoModelForCausalLM.from_pretrained(model_id).half().eval().to(0)
 
 INPUT_EXAMPLES = dataset["train"]["text"][:NUM_SAMPLES]
 
@@ -57,14 +57,14 @@ for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Pytorch single batch"):
     print("-" * 30)
 
     result = call_model(
-        model=model,
+        model=torch_model,
         input_text=example,
         batch_size=1,
         desc="Torch",
         verbose=True
     )
     _ = call_model(
-        model=model,
+        model=torch_model,
         input_text=example,
         batch_size=4,
         desc="Torch",
@@ -74,9 +74,9 @@ for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Pytorch single batch"):
     # result = text_output[len(example):]
     torch_outputs.append(result)
 
-model.to("cpu")
+torch_model.to("cpu")
 ds_model = deepspeed.init_inference(
-    model=model,  # Transformers models
+    model=torch_model,  # Transformers models
     mp_size=1,  # Number of GPU
     dtype=torch.float16,  # dtype of the weights (fp16)
     replace_method="auto",  # Lets DS autmatically identify the layer to replace
