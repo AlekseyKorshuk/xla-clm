@@ -9,6 +9,7 @@ import warnings
 
 dataset = load_dataset("ChaiML/user_model_inputs")
 model_id = "hakurei/litv2-6B-rev2"
+model_id = "gpt2"
 
 GENERATION_KWARGS = {
     "max_new_tokens": 32,
@@ -35,7 +36,7 @@ for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Pytorch single batch"):
     inputs = tokenizer(example, return_tensors='pt').to(0)
     result = model.generate(**inputs, **GENERATION_KWARGS)
     print(result)
-    text_output = tokenizer.decode(result)
+    text_output = tokenizer.decode(result[0])
     print(text_output)
     torch_outputs.append(result)
 
