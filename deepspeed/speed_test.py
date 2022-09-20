@@ -42,14 +42,14 @@ def call_model(model, input_text, batch_size, desc="", verbose=False):
         print(desc)
         print(f"Batch size: {batch_size}")
     inputs = tokenizer([input_text] * batch_size, return_tensors='pt').to(0)
-    results = model.generate(**inputs, **GENERATION_KWARGS)
-    result = None
-    for i, result in enumerate(results):
-        text_output = tokenizer.decode(result)
-        result = text_output[len(input_text):]
+    outputs = model.generate(**inputs, **GENERATION_KWARGS)
+    output = None
+    for i, output in enumerate(outputs):
+        text_output = tokenizer.decode(output)
+        output = text_output[len(input_text):]
         if verbose:
-            print(f"#{i}: {result}")
-    return result
+            print(f"#{i}: {output}")
+    return output
 
 
 torch_outputs = []
