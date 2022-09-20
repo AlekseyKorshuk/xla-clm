@@ -58,8 +58,14 @@ for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Accelerated single batch"):
     result = text_output[len(example):]
     accelerated_outputs.append(result)
 
+num_matches = 0
 for torch_output, accelerated_output in zip(torch_outputs, accelerated_outputs):
-    print("#" * 100)
-    print(torch_output)
-    print("-" * 100)
-    print(accelerated_output)
+    num_matches += (torch_output == accelerated_output)
+
+    # print("#" * 100)
+    # print(torch_output)
+    # print("-" * 100)
+    # print(accelerated_output)
+
+print(f"Accuracy: {num_matches / len(INPUT_EXAMPLES)}")
+print(f"Matches: {num_matches}/{len(INPUT_EXAMPLES)}")
