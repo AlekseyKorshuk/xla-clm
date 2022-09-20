@@ -92,7 +92,7 @@ for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Accelerated single batch"):
         input_text=example,
         batch_size=BATCH_SIZE,
         desc="Deepspeed",
-        verbose=True
+        verbose=VERBOSE
     )
 
     accelerated_outputs.append(result)
