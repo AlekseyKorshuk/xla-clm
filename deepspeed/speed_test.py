@@ -19,9 +19,9 @@ GENERATION_KWARGS = {
     'do_sample': False,
     'pad_token_id': 198,
     'temperature': 0.72,
-    # 'top_k': 0,
-    # 'top_p': 0.725,
-    # 'repetition_penalty': 1.13,
+    'top_k': 0,
+    'top_p': 0.725,
+    'repetition_penalty': 1.13,
 }
 model = AutoModelForCausalLM.from_pretrained(model_id).half().eval().to(0)
 
