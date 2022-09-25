@@ -8,23 +8,25 @@ model_id = "gpt2"
 VERBOSE = True
 BATCH_SIZE = 4
 
-EXAMPLE = "Model Implementations for Inference (MII) is an open-sourced repository" \
-          " for making low-latency and high-throughput inference accessible to all " \
+EXAMPLE = "Model Implementations for Inference (MII)\n" \
+          "Model Implementations for Inference (MII) is an open-sourced repository " \
+          "for making low-latency and high-throughput inference accessible to all " \
           "data scientists by alleviating the need to apply complex system optimization " \
           "techniques themselves. Out-of-box, MII offers support for thousands of " \
           "widely used DL models, optimized using DeepSpeed-Inference, that can be " \
           "deployed with a few lines of code, while achieving significant latency " \
-          "reduction compared to their vanilla open-sourced versions."
+          "reduction compared to their vanilla open-sourced versions.\n" \
+          "DeepSpeed on Azure" \
+          "\nDeepSpeed users are diverse and have access to different environments. " \
+          "We recommend to try DeepSpeed on Azure as it is the simplest and easiest " \
+          "method. The recommended method to try DeepSpeed on Azure is through AzureML " \
+          "recipes. The job submission and data preparation scripts have been made " \
+          "available here. For more details on how to use DeepSpeed on Azure, please " \
+          "follow the Azure tutorial."
 
 GENERATION_KWARGS = {
-    "max_new_tokens": 32,
-    'eos_token_id': 198,
+    "max_new_tokens": 64,
     'do_sample': False,
-    'pad_token_id': 198,
-    'temperature': 0.72,
-    'top_k': 0,
-    'top_p': 0.725,
-    'repetition_penalty': 1.13,
 }
 
 torch_model = AutoModelForCausalLM.from_pretrained(model_id).half().eval().to(0)
