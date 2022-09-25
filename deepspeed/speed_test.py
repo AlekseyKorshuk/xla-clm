@@ -8,12 +8,12 @@ from datasets import load_dataset
 import warnings
 
 dataset = load_dataset("ChaiML/user_model_inputs")
-model_id = "hakurei/litv2-6B-rev2"
-# model_id = "gpt2"
+# model_id = "hakurei/litv2-6B-rev2"
+model_id = "gpt2"
 
-NUM_SAMPLES = 100
-VERBOSE = False
-BATCH_SIZE = 1
+NUM_SAMPLES = 1
+VERBOSE = True
+BATCH_SIZE = 4
 MAX_TOKENS = 2048
 
 GENERATION_KWARGS = {
