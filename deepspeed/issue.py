@@ -8,7 +8,13 @@ model_id = "gpt2"
 VERBOSE = True
 BATCH_SIZE = 4
 
-EXAMPLE = "Model Implementations for Inference (MII)\n" \
+EXAMPLE = "DeepSpeed-Training\n" \
+          "DeepSpeed offers a confluence of system innovations, that has made large " \
+          "scale DL training effective, and efficient, greatly improved ease of use, " \
+          "and redefined the DL training landscape in terms of scale that is possible. " \
+          "These innovations such as ZeRO, 3D-Parallelism, DeepSpeed-MoE, ZeRO-Infinity, " \
+          "etc. fall under the training pillar. Learn more: DeepSpeed-Training\n" \
+          "Model Implementations for Inference (MII)\n" \
           "Model Implementations for Inference (MII) is an open-sourced repository " \
           "for making low-latency and high-throughput inference accessible to all " \
           "data scientists by alleviating the need to apply complex system optimization " \
@@ -36,10 +42,14 @@ tokenizer = AutoTokenizer.from_pretrained(model_id)
 
 def call_model(model, input_text, batch_size, desc="", verbose=False):
     assert batch_size > 0
+
+    inputs = tokenizer([input_text] * batch_size, return_tensors='pt').to(0)
+
     if verbose:
         print(desc)
         print(f"Batch size: {batch_size}")
-    inputs = tokenizer([input_text] * batch_size, return_tensors='pt').to(0)
+        print(f"Input size: {inputs.input_ids.size()}")
+
     outputs = model.generate(**inputs, **GENERATION_KWARGS)
     outputs_set = list()
     output = None
