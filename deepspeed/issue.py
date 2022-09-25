@@ -14,6 +14,14 @@ EXAMPLE = "DeepSpeed-Training\n" \
           "and redefined the DL training landscape in terms of scale that is possible. " \
           "These innovations such as ZeRO, 3D-Parallelism, DeepSpeed-MoE, ZeRO-Infinity, " \
           "etc. fall under the training pillar. Learn more: DeepSpeed-Training\n" \
+          "DeepSpeed-Inference\n" \
+          "DeepSpeed brings together innovations in parallelism technology such as tensor, " \
+          "pipeline, expert and ZeRO-parallelism, and combines them with high performance " \
+          "custom inference kernels, communication optimizations and heterogeneous memory " \
+          "technologies to enable inference at an unprecedented scale, while achieving " \
+          "unparalleled latency, throughput and cost reduction. This systematic composition " \
+          "of system technologies for inference falls under the inference pillar. " \
+          "Learn more: DeepSpeed-Inference\n" \
           "Model Implementations for Inference (MII)\n" \
           "Model Implementations for Inference (MII) is an open-sourced repository " \
           "for making low-latency and high-throughput inference accessible to all " \
