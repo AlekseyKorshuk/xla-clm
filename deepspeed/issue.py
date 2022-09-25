@@ -1,7 +1,6 @@
 import torch
-from transformers import AutoTokenizer, AutoModelForTokenClassification, pipeline, AutoModelForCausalLM
+from transformers import AutoTokenizer, AutoModelForCausalLM
 import deepspeed
-import tqdm
 
 model_id = "gpt2"
 
@@ -67,7 +66,7 @@ def call_model(model, input_text, batch_size, desc="", verbose=False):
         outputs_set.append(output)
         if verbose:
             print(f"#{i}: {output}")
-    assert len(set(outputs_set)) == 1
+    # assert len(set(outputs_set)) == 1
     return output
 
 
@@ -79,14 +78,14 @@ call_model(
     verbose=VERBOSE
 )
 
-torch_model.to("cpu")
+# torch_model.to("cpu")
 
 ds_model = deepspeed.init_inference(
-    model=torch_model,  # Transformers models
-    mp_size=1,  # Number of GPU
-    dtype=torch.float16,  # dtype of the weights (fp16)
-    replace_method="auto",  # Lets DS autmatically identify the layer to replace
-    replace_with_kernel_inject=True,  # replace the model with the kernel injector
+    model=torch_model,
+    mp_size=1,
+    dtype=torch.float16,
+    replace_method="auto",
+    replace_with_kernel_inject=True,
 )
 
 call_model(
