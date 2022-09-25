@@ -17,8 +17,14 @@ EXAMPLE = "Model Implementations for Inference (MII) is an open-sourced reposito
           "reduction compared to their vanilla open-sourced versions."
 
 GENERATION_KWARGS = {
-    "max_new_tokens": 64,
+    "max_new_tokens": 32,
+    'eos_token_id': 198,
     'do_sample': False,
+    'pad_token_id': 198,
+    'temperature': 0.72,
+    'top_k': 0,
+    'top_p': 0.725,
+    'repetition_penalty': 1.13,
 }
 
 torch_model = AutoModelForCausalLM.from_pretrained(model_id).half().eval().to(0)
