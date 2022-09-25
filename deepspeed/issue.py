@@ -38,7 +38,7 @@ EXAMPLE = "DeepSpeed-Training\n" \
           "follow the Azure tutorial."
 
 GENERATION_KWARGS = {
-    "max_new_tokens": 64,
+    "max_new_tokens": 4,
     'do_sample': False,
 }
 
@@ -77,8 +77,6 @@ call_model(
     desc="Torch",
     verbose=VERBOSE
 )
-
-# torch_model.to("cpu")
 
 ds_model = deepspeed.init_inference(
     model=torch_model,
