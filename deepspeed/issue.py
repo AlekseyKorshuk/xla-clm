@@ -38,7 +38,7 @@ EXAMPLE = "DeepSpeed-Training\n" \
           "follow the Azure tutorial."
 
 GENERATION_KWARGS = {
-    "max_new_tokens": 4,
+    "max_new_tokens": 1,
     'do_sample': False,
 }
 
