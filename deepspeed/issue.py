@@ -5,7 +5,7 @@ import deepspeed
 model_id = "gpt2"
 
 VERBOSE = True
-BATCH_SIZE = 4
+BATCH_SIZE = 2
 
 EXAMPLE = "DeepSpeed-Training\n" \
           "DeepSpeed offers a confluence of system innovations, that has made large " \
@@ -38,7 +38,7 @@ EXAMPLE = "DeepSpeed-Training\n" \
           "follow the Azure tutorial."
 
 GENERATION_KWARGS = {
-    "max_new_tokens": 2,
+    "max_new_tokens": 4,
     'do_sample': False,
 }
 
