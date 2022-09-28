@@ -8,8 +8,8 @@ from datasets import load_dataset
 import warnings
 
 dataset = load_dataset("ChaiML/user_model_inputs")
-# model_id = "hakurei/litv2-6B-rev2"
-model_id = "gpt2"
+model_id = "hakurei/litv2-6B-rev2"
+# model_id = "gpt2"
 
 NUM_SAMPLES = 10
 VERBOSE = False
