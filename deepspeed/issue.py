@@ -28,7 +28,7 @@ tokenizer.pad_token_id = 198
 
 
 def call_model(model, input_texts, desc="", verbose=False):
-    inputs = tokenizer(input_texts, return_tensors='pt', padding="longest", padding_side="left").to(0)
+    inputs = tokenizer(input_texts, return_tensors='pt', padding="longest").to(0)
 
     if verbose:
         print(desc)
