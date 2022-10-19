@@ -85,6 +85,7 @@ call_model(
     verbose=VERBOSE
 )
 
+input("test")
 ds_model = deepspeed.init_inference(
     model=torch_model,
     mp_size=1,
@@ -92,6 +93,8 @@ ds_model = deepspeed.init_inference(
     replace_method="auto",
     replace_with_kernel_inject=True,
 )
+
+input("test2")
 
 call_model(
     model=ds_model,
