@@ -24,6 +24,7 @@ GENERATION_KWARGS = {
 torch_model = AutoModelForCausalLM.from_pretrained(model_id).half().eval()
 
 tokenizer = AutoTokenizer.from_pretrained(model_id)
+tokenizer.pad_token_id = 198
 
 
 def call_model(model, input_texts, desc="", verbose=False):
