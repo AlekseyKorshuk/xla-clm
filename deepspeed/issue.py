@@ -2,7 +2,7 @@ import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 import deepspeed
 
-model_id = "gpt2"
+model_id = "hakurei/litv2-6B-rev2"
 
 VERBOSE = True
 BATCH_SIZE = 4
