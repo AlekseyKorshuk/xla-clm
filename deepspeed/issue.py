@@ -86,8 +86,6 @@ ds_model = deepspeed.init_inference(
     replace_with_kernel_inject=True,
 )
 
-input("test2")
-
 call_model(
     model=ds_model,
     input_text=EXAMPLE,
