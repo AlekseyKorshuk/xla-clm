@@ -5,7 +5,7 @@ from datasets import load_dataset
 
 dataset = load_dataset("ChaiML/user_model_inputs")
 
-model_id = "hakurei/litv2-6B-rev2"
+model_id = "gpt2"
 
 VERBOSE = True
 BATCH_SIZE = 4
