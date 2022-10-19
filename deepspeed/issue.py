@@ -5,7 +5,7 @@ import deepspeed
 model_id = "gpt2"
 
 VERBOSE = True
-BATCH_SIZE = 2
+BATCH_SIZE = 4
 
 EXAMPLE = "DeepSpeed-Training\n" \
           "DeepSpeed offers a confluence of system innovations, that has made large " \
