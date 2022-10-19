@@ -85,7 +85,6 @@ def call_model(model, input_text, batch_size, desc="", verbose=False):
 #     verbose=VERBOSE
 # )
 
-input("test")
 ds_model = deepspeed.init_inference(
     model=torch_model,
     mp_size=1,
