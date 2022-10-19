@@ -49,7 +49,7 @@ GENERATION_KWARGS = {
     'repetition_penalty': 1.13,
 }
 
-torch_model = AutoModelForCausalLM.from_pretrained(model_id).half().eval().to(0)
+torch_model = AutoModelForCausalLM.from_pretrained(model_id).half().eval()
 
 tokenizer = AutoTokenizer.from_pretrained(model_id)
 
@@ -77,13 +77,13 @@ def call_model(model, input_text, batch_size, desc="", verbose=False):
     return output
 
 
-call_model(
-    model=torch_model,
-    input_text=EXAMPLE,
-    batch_size=BATCH_SIZE,
-    desc="Torch",
-    verbose=VERBOSE
-)
+# call_model(
+#     model=torch_model,
+#     input_text=EXAMPLE,
+#     batch_size=BATCH_SIZE,
+#     desc="Torch",
+#     verbose=VERBOSE
+# )
 
 input("test")
 ds_model = deepspeed.init_inference(
