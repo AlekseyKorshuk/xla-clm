@@ -68,8 +68,8 @@ def call_model(model, input_text, batch_size, desc="", verbose=False):
     outputs_set = list()
     output = None
     for i, output in enumerate(outputs):
-        text_output = tokenizer.decode(output)
-        output = text_output[len(input_text):]
+        text_output = tokenizer.decode(output[len(inputs.input_ids[i]):], skip_special_tokens=True)
+        output = text_output
         outputs_set.append(output)
         if verbose:
             print(f"#{i}: {output}")
