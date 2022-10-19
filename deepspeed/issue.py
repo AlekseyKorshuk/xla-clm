@@ -23,7 +23,7 @@ GENERATION_KWARGS = {
 
 torch_model = AutoModelForCausalLM.from_pretrained(model_id).half().eval()
 
-tokenizer = AutoTokenizer.from_pretrained(model_id)
+tokenizer = AutoTokenizer.from_pretrained(model_id, padding_side="left")
 tokenizer.pad_token_id = 198
 
 
