@@ -21,7 +21,7 @@ GENERATION_KWARGS = {
     'repetition_penalty': 1.13,
 }
 
-torch_model = AutoModelForCausalLM.from_pretrained(model_id).half().eval()
+torch_model = AutoModelForCausalLM.from_pretrained(model_id).half().eval().to(0)
 
 tokenizer = AutoTokenizer.from_pretrained(model_id, padding_side="left")
 tokenizer.pad_token_id = 198
@@ -46,6 +46,13 @@ def call_model(model, input_texts, desc="", verbose=False):
             print(f"#{i}: {output}")
     return output
 
+
+call_model(
+    model=torch_model,
+    input_texts=dataset["train"]["text"][:4],
+    desc="Deepspeed",
+    verbose=VERBOSE
+)
 
 ds_model = deepspeed.init_inference(
     model=torch_model,
