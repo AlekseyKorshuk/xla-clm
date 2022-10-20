@@ -70,3 +70,10 @@ call_model(
     desc="Deepspeed",
     verbose=VERBOSE
 )
+
+call_model(
+    model=ds_model,
+    input_texts=dataset["train"]["text"][4:8],
+    desc="Deepspeed",
+    verbose=VERBOSE
+)
