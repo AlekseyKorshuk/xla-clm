@@ -6,6 +6,7 @@ from datasets import load_dataset
 dataset = load_dataset("ChaiML/user_model_inputs")
 
 model_id = "hakurei/litv2-6B-rev2"
+model_id = "gpt2"
 
 VERBOSE = True
 BATCH_SIZE = 4
@@ -47,14 +48,19 @@ def call_model(model, input_texts, desc="", verbose=False):
     return output
 
 
-# call_model(
-#     model=torch_model,
-#     input_texts=dataset["train"]["text"][:4],
-#     desc="Torch",
-#     verbose=VERBOSE
-# )
-#
-# torch_model.cpu()
+LONG_EXAMPLE = "User: How are you?\nBot: This is demo response, it is quite long to check everything.\n" * 20 + \
+               "User: How are you?\nBot:"
+
+call_model(
+    model=torch_model,
+    input_texts=dataset["train"]["text"][:4],
+    desc="Torch",
+    verbose=VERBOSE
+)
+
+torch_model.cpu()
+
+input_texts = [LONG_EXAMPLE] * BATCH_SIZE
 
 ds_model = deepspeed.init_inference(
     model=torch_model,
@@ -66,14 +72,7 @@ ds_model = deepspeed.init_inference(
 
 call_model(
     model=ds_model,
-    input_texts=dataset["train"]["text"][:4],
-    desc="Deepspeed",
-    verbose=VERBOSE
-)
-
-call_model(
-    model=ds_model,
-    input_texts=dataset["train"]["text"][4:8],
+    input_texts=input_texts,
     desc="Deepspeed",
     verbose=VERBOSE
 )
