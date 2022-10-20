@@ -50,9 +50,11 @@ def call_model(model, input_texts, desc="", verbose=False):
 call_model(
     model=torch_model,
     input_texts=dataset["train"]["text"][:4],
-    desc="Deepspeed",
+    desc="Torch",
     verbose=VERBOSE
 )
+
+torch_model.cpu()
 
 ds_model = deepspeed.init_inference(
     model=torch_model,
