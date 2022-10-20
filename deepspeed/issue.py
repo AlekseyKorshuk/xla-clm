@@ -48,8 +48,9 @@ def call_model(model, input_texts, desc="", verbose=False):
     return output
 
 
-LONG_EXAMPLE = "User: How are you?\nBot: This is demo response, it is quite long to check everything.\n" * 50 + \
+LONG_EXAMPLE = "User: How are you?\nBot: This is demo response, it is quite long to check everything.\n" * 30 + \
                "User: How are you?\nBot:"
+print(f"Long example length: {len(LONG_EXAMPLE)}")
 input_texts = [LONG_EXAMPLE] * BATCH_SIZE
 
 call_model(
