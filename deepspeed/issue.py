@@ -1,9 +1,6 @@
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 import deepspeed
-from datasets import load_dataset
-
-dataset = load_dataset("ChaiML/user_model_inputs")
 
 model_id = "hakurei/litv2-6B-rev2"
 # model_id = "gpt2"
@@ -48,7 +45,7 @@ def call_model(model, input_texts, desc="", verbose=False):
     return output
 
 
-LONG_EXAMPLE = "User: How are you?\nBot: This is demo response, it is quite long to check everything.\n" * 30 + \
+LONG_EXAMPLE = "User: How are you?\nBot: This is demo response, it is quite long to check everything.\n" * 40 + \
                "User: How are you?\nBot:"
 print(f"Long example length: {len(LONG_EXAMPLE)}")
 input_texts = [LONG_EXAMPLE] * BATCH_SIZE
