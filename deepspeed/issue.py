@@ -48,19 +48,18 @@ def call_model(model, input_texts, desc="", verbose=False):
     return output
 
 
-LONG_EXAMPLE = "User: How are you?\nBot: This is demo response, it is quite long to check everything.\n" * 20 + \
+LONG_EXAMPLE = "User: How are you?\nBot: This is demo response, it is quite long to check everything.\n" * 50 + \
                "User: How are you?\nBot:"
+input_texts = [LONG_EXAMPLE] * BATCH_SIZE
 
 call_model(
     model=torch_model,
-    input_texts=dataset["train"]["text"][:4],
+    input_texts=input_texts,
     desc="Torch",
     verbose=VERBOSE
 )
 
 torch_model.cpu()
-
-input_texts = [LONG_EXAMPLE] * BATCH_SIZE
 
 ds_model = deepspeed.init_inference(
     model=torch_model,
