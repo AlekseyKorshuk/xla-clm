@@ -61,6 +61,7 @@ call_model(
 )
 
 torch_model.cpu()
+torch.cuda.empty_cache()
 
 ds_model = deepspeed.init_inference(
     model=torch_model,
