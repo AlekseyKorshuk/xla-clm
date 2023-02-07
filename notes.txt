@@ -12,3 +12,5 @@ pip install git+https://github.com/AlekseyKorshuk/DeepSpeed.git@ds-inference/sup
 pip install git+https://github.com/AlekseyKorshuk/DeepSpeed.git@cholmes/fix-long-seq-len-inference --upgrade
 
 pip install transformers[sentencepiece]==4.21.2 accelerate --upgrade -q
+
+pip install git+https://github.com/microsoft/DeepSpeed.git@cholmes/scratch-fix --upgrade
