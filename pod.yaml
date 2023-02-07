@@ -10,7 +10,7 @@ spec:
     - name: docker-creds
   containers:
     - name: container-aleksey-1
-      image: gcr.io/chai-959f8/training:cuda-ppo
+      image: nvcr.io/nvidia/pytorch:22.12-py3
       imagePullPolicy: Always
       command: [ "sleep" ]
       args: [ "infinity" ]

@@ -9,7 +9,7 @@ import warnings
 
 dataset = load_dataset("ChaiML/user_model_inputs")
 model_id = "AlekseyKorshuk/litv2-6B-rev2-fp16"
-model_id = "gpt2"
+# model_id = "gpt2"
 
 NUM_SAMPLES = 100
 VERBOSE = False
