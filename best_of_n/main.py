@@ -34,7 +34,10 @@ INPUT_EXAMPLES = dataset["train"]["text"][:NUM_SAMPLES]
 try:
     tokenizer = AutoTokenizer.from_pretrained(model_id, use_fast=True)
 except:
-    tokenizer = AutoTokenizer.from_pretrained(model_id, use_fast=False)
+    try:
+        tokenizer = AutoTokenizer.from_pretrained(model_id, use_fast=False)
+    except:
+        tokenizer = AutoTokenizer.from_pretrained("gpt2", use_fast=False)
 
 
 def prepare_input(example):
