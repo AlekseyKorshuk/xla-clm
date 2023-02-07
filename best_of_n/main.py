@@ -26,7 +26,9 @@ GENERATION_KWARGS = {
     'top_p': 0.725,
     'repetition_penalty': 1.13,
 }
-torch_model = AutoModelForCausalLM.from_pretrained(model_id).half().eval().to(0)
+torch_model = AutoModelForCausalLM.from_pretrained(model_id).half().eval()
+
+# torch_model = torch_model.to(0)
 
 INPUT_EXAMPLES = dataset["train"]["text"][:NUM_SAMPLES]
 
@@ -76,22 +78,22 @@ def call_model(model, input_text, batch_size, desc="", verbose=False):
     return output
 
 
-torch_outputs = []
-for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Pytorch"):
-    if VERBOSE:
-        print("#" * 10, "INPUT", "#" * 10)
-        print(example)
-        print("-" * 30)
-
-    result = call_model(
-        model=torch_model,
-        input_text=example,
-        batch_size=BATCH_SIZE,
-        desc="Torch",
-        verbose=VERBOSE
-    )
-
-    torch_outputs.append(result)
+# torch_outputs = []
+# for example in tqdm.tqdm(INPUT_EXAMPLES, desc="Pytorch"):
+#     if VERBOSE:
+#         print("#" * 10, "INPUT", "#" * 10)
+#         print(example)
+#         print("-" * 30)
+#
+#     result = call_model(
+#         model=torch_model,
+#         input_text=example,
+#         batch_size=BATCH_SIZE,
+#         desc="Torch",
+#         verbose=VERBOSE
+#     )
+#
+#     torch_outputs.append(result)
 
 torch_model.to("cpu")
 ds_model = deepspeed.init_inference(
