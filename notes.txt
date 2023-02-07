@@ -14,3 +14,10 @@ pip install git+https://github.com/AlekseyKorshuk/DeepSpeed.git@cholmes/fix-long
 pip install transformers[sentencepiece]==4.21.2 accelerate --upgrade -q
 
 pip install git+https://github.com/microsoft/DeepSpeed.git@cholmes/scratch-fix --upgrade
+
+
+bs 4:
+Pytorch: 100/100 [01:26<00:00,  1.16it/s]
+Accelerated: 100/100 [01:01<00:00,  1.63it/s]
+
+bs 16:

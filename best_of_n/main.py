@@ -13,7 +13,7 @@ model_id = "AlekseyKorshuk/litv2-6B-rev2-fp16"
 
 NUM_SAMPLES = 100
 VERBOSE = False
-BATCH_SIZE = 4
+BATCH_SIZE = 16
 MAX_TOKENS = 1024 - 32
 
 GENERATION_KWARGS = {
